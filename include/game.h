@@ -13,6 +13,7 @@ class Game {
           const unsigned int map_height,
           const unsigned int map_width );
     ~Game();
+    void play();
 
   private:
     unsigned int carnivore_amount_, herbivore_amount_;
