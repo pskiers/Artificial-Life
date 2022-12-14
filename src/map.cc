@@ -1,7 +1,7 @@
 #include "../include/map.h"
 
-std::optional<Field &> Map::get_field( const unsigned int x, const unsigned int y ) {
-    if ( x > this->height_ || y > this->width_ )
+Field& Map::get_field( const unsigned int x, const unsigned int y ) {
+    if ( x > m_height || y > m_width )
         return std::optional<Field &>();
-    return this->fields_[x][y];
+    return m_fields[x][y];
 }

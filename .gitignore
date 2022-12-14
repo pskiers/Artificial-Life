@@ -5,3 +5,5 @@
 CMakeCache.txt
 Makefile
 *.vscode
+.idea
+cmake-build-debug

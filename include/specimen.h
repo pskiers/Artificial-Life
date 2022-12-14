@@ -6,15 +6,19 @@
 
 class Specimen {
   public:
-    Specimen( Field *position, unsigned int speed, unsigned int sight_range, unsigned int sight_angle ):
-        position_( position ), speed_( speed ), sight_range_( sight_range ), sight_angle_( sight_angle % 360 ),
-        food_requirements_( 0 ) {}
-    ~Specimen();
-    virtual void move( Map map );
+    Specimen(Field *position, unsigned int speed, unsigned int sight_range, unsigned int sight_angle,
+              unsigned int time_to_sleep):
+        m_position(position), m_speed(speed), m_sight_range(sight_range), m_sight_angle(sight_angle),
+        m_time_to_sleep(time_to_sleep), m_max_time_to_sleep(time_to_sleep), m_current_hunger(0){
+        m_max_hunger = countMaximalHunger(speed, sight_range, sight_angle, time_to_sleep);
+    }
 
-  protected:
-    Field *position_;
-    unsigned int speed_, sight_range_, sight_angle_, food_requirements_;
+  private:
+    unsigned int countMaximalHunger(unsigned int speed, unsigned int sight_range, unsigned int sight_angle,
+                                     unsigned int time_to_sleep);
+    Field* m_position;
+    unsigned int m_speed, m_sight_range, m_sight_angle, m_time_to_sleep, m_max_time_to_sleep, m_current_hunger,
+        m_max_hunger;
 };
 
 #endif

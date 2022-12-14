@@ -1,4 +1,5 @@
 #include <iostream>
+#include "src/game.cc"
 
 using namespace std;
 

@@ -1,9 +1,9 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include <carnivore.h>
-#include <herbivore.h>
-#include <map.h>
+#include "carnivore.h"
+#include "herbivore.h"
+#include "map.h"
 #include <vector>
 
 class Game {
@@ -12,14 +12,12 @@ class Game {
           const unsigned int herbivores_amount,
           const unsigned int map_height,
           const unsigned int map_width );
-    ~Game();
     void play();
 
   private:
-    unsigned int carnivore_amount_, herbivore_amount_;
-    std::vector<Carnivore> carnivores_;
-    std::vector<Herbivore> herbivores_;
-    Map map_;
+    unsigned int m_carnivore_amount, m_herbivore_amount;
+    std::vector<Specimen> m_population;
+    Map m_map;
 };
 
 #endif

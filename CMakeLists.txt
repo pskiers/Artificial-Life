@@ -14,5 +14,5 @@ include_directories(src)
 # add_library(BinarySearchTree src/BinarySearchTree.cpp)
 # target_link_libraries(BinarySearchTree Node)
 
-add_executable(Artificial_life src/artificial_life.cc)
+add_executable(Artificial_life artificial_life.cc)
 # target_link_libraries(Lab3 BinarySearchTree)
