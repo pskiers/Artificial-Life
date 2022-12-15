@@ -4,6 +4,7 @@
 #include "carnivore.h"
 #include "herbivore.h"
 #include "map.h"
+
 #include <vector>
 
 class Game {

@@ -1,4 +1,4 @@
-#include "../include/field.h"
+#include "field.h"
 
 
 void Field::update_plant_state() {
@@ -15,10 +15,10 @@ void Field::remove_plant() {
     m_has_plant = false;
 }
 
-Specimen& Field::get_specimen() {
+Specimen *Field::get_specimen() {
     return m_resident;
 }
 
-void Field::set_resident(Specimen *new_resident) {
-    m_resident = *new_resident;
+void Field::set_resident( Specimen *new_resident ) {
+    m_resident = new_resident;
 }

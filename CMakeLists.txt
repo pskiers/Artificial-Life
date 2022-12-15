@@ -8,11 +8,11 @@ add_compile_options(-Wall -Wextra -pedantic -Werror -g)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/build")
 
 include_directories(include)
-
 include_directories(src)
 
-# add_library(BinarySearchTree src/BinarySearchTree.cpp)
-# target_link_libraries(BinarySearchTree Node)
+file(GLOB all_SRCS
+        include/*.h
+        src/*.cc
+        )
 
-add_executable(Artificial_life artificial_life.cc)
-# target_link_libraries(Lab3 BinarySearchTree)
+add_executable(artificial_life ${all_SRCS})
