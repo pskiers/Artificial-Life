@@ -1,8 +1,9 @@
 #include "field.h"
 
+Field::Field(): m_has_plant( false ), m_resident( nullptr ) {}
 
 void Field::update_plant_state() {
-    // TODO maybe add some probability of plants growing back, maybe probability should be dependant on the time this
+    // TODO maybe add some probability of plants growing back, maybe probability should be dependent on the time this
     // field has been without plants
     m_has_plant = true;
 }

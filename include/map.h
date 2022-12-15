@@ -7,13 +7,15 @@
 
 class Map {
   public:
-    Map( const unsigned int height, const unsigned int width ):
-        m_height( height ), m_width( width ), m_fields( height, std::vector<Field>( width ) ) {}
-    Field *get_field( const unsigned int x, const unsigned int y );
+    Map( unsigned int height, unsigned int width );
+    Field *get_field( unsigned int x_axis, unsigned int y_axis );
+    std::vector<Field>* getPositions();
+    unsigned int getHeight();
+    unsigned int getWidth();
 
   private:
     unsigned int m_height, m_width;
-    std::vector<std::vector<Field>> m_fields;
+    std::vector<Field> m_fields;
 };
 
 #endif

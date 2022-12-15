@@ -9,7 +9,7 @@ class Specimen;
 
 class Field {
   public:
-    Field(): m_has_plant( false ), m_resident( nullptr ) {}
+    Field();
     bool has_plant();
     void update_plant_state();
     void remove_plant();

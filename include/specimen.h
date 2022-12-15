@@ -2,6 +2,7 @@
 #define SPECIMEN_H
 
 #include "field.h"
+#include <iostream>
 
 class Field;
 
@@ -17,10 +18,11 @@ class Specimen {
         m_max_time_to_sleep( time_to_sleep ), m_current_hunger( 0 ) {
         m_max_hunger = countMaximalHunger( speed, sight_range, sight_angle, time_to_sleep );
     }
-    ~Specimen() {};
+    virtual ~Specimen() = default;
+    virtual void describeMyself() = 0;
 
   private:
-    unsigned int countMaximalHunger( unsigned int speed,
+    static unsigned int countMaximalHunger( unsigned int speed,
                                      unsigned int sight_range,
                                      unsigned int sight_angle,
                                      unsigned int time_to_sleep );
