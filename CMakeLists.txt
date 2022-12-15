@@ -18,7 +18,7 @@ file(
   src/*.cc
 )
 
-add_library(app_library ${SRCS} src/herbivore.cc src/carnivore.cc src/specimen.cc)
+add_library(app_library ${SRCS})
 
 file(
   GLOB APPS
