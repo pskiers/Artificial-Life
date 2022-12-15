@@ -12,7 +12,7 @@ add_compile_options(-Wall -Wextra -pedantic -Werror -g)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/build")
 
-set(CMAKE_PREFIX_PATH "/home/pawel/Qt/6.4.1/gcc_64")
+set(CMAKE_PREFIX_PATH "$ENV{HOME}/Qt/6.4.1/gcc_64")
 find_package(Qt6 REQUIRED COMPONENTS Widgets)
 qt_standard_project_setup()
 

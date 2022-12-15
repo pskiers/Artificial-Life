@@ -2,6 +2,7 @@
 #define SPECIMEN_H
 
 #include "field.h"
+
 #include <iostream>
 
 class Field;
@@ -23,9 +24,9 @@ class Specimen {
 
   private:
     static unsigned int countMaximalHunger( unsigned int speed,
-                                     unsigned int sight_range,
-                                     unsigned int sight_angle,
-                                     unsigned int time_to_sleep );
+                                            unsigned int sight_range,
+                                            unsigned int sight_angle,
+                                            unsigned int time_to_sleep );
     Field *m_position;
     unsigned int m_speed, m_sight_range, m_sight_angle, m_time_to_sleep, m_max_time_to_sleep, m_current_hunger,
         m_max_hunger;
