@@ -5,5 +5,5 @@ Herbivore::Herbivore(Field *position, unsigned int speed, unsigned int sight_ran
                      Specimen( position, speed, sight_range, sight_angle, time_to_sleep ) {}
 
 void Herbivore::describeMyself() {
-    std::cout << "I am the cattle!\n";
+    std::cout << "Cattle  ";
 }

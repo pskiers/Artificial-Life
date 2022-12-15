@@ -21,23 +21,25 @@ Game::~Game() {
 }
 
 void Game::play() {
-//    for(unsigned int i=0; i<m_map.getWidth(); i++)
-//    {
-//        for(unsigned int j = 0; j<m_map.getHeight(); j++)
-//        {
-//            std::cout << "X:" << i << " Y:" << j << " ";
-//            if(m_map.get_field((i*j)+j)->get_specimen())
-//            {
-//                m_map.get_field((i*j)+j)->get_specimen()->describeMyself();
-//            }
-//        }
-//        std::cout << "\n";
-//    }
+    for(unsigned int i=0; i<m_map.getHeight(); i++)
+    {
+        for(unsigned int j = 0; j<m_map.getWidth(); j++)
+        {
+            if(m_map.get_field((i*m_map.getWidth())+j)->get_specimen())
+            {
+                m_map.get_field((i*m_map.getWidth())+j)->get_specimen()->describeMyself();
+            }
+            else{
+                std::cout << "X:" << i << " Y:" << j << " ";
+            }
+        }
+        std::cout << "\n";
+    }
     for(unsigned int i = 0; i < m_map.getWidth()*m_map.getHeight(); i++)
     {
         if(m_map.get_field(i)->get_specimen()) {
-            std::cout << i << " ";
             m_map.get_field(i)->get_specimen()->describeMyself();
+            std::cout << "index: " << i << "\n";
         }
     }
 }
@@ -45,7 +47,7 @@ void Game::play() {
 unsigned int Game::get_random_position(unsigned int vector_size) {
     std::random_device random_device;
     std::mt19937 generator(random_device());
-    std::uniform_int_distribution<> distribution(0, vector_size);
+    std::uniform_int_distribution<> distribution(0, vector_size - 1);
     return distribution(generator);
 }
 

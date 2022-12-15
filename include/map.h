@@ -8,7 +8,6 @@
 class Map {
   public:
     Map( unsigned int height, unsigned int width );
-    Field *get_field( unsigned int x_axis, unsigned int y_axis );
     Field *get_field( unsigned int index );
     unsigned int getHeight();
     unsigned int getWidth();

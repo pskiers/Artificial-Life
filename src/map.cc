@@ -1,9 +1,5 @@
 #include "map.h"
 
-Field *Map::get_field( const unsigned int x_axis, const unsigned int y_axis ) {
-    return &m_fields[(x_axis-1)*y_axis + y_axis];
-}
-
 Field *Map::get_field( const unsigned int index) {
     return &m_fields[index];
 }
