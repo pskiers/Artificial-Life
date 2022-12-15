@@ -1,24 +1,33 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include <carnivore.h>
-#include <herbivore.h>
-#include <map.h>
+#include "carnivore.h"
+#include "herbivore.h"
+#include "map.h"
+
+#include <iostream>
 #include <vector>
 
 class Game {
   public:
-    Game( const unsigned int carnivores_amount,
-          const unsigned int herbivores_amount,
-          const unsigned int map_height,
-          const unsigned int map_width );
+    Game( unsigned int carnivores_amount,
+          unsigned int herbivores_amount,
+          unsigned int plants_amount,
+          unsigned int map_height,
+          unsigned int map_width );
     ~Game();
+    void play();
 
   private:
-    unsigned int carnivore_amount_, herbivore_amount_;
-    std::vector<Carnivore> carnivores_;
-    std::vector<Herbivore> herbivores_;
-    Map map_;
+    void generate_population( unsigned int carnivores_amount,
+                              unsigned int herbivores_amount,
+                              unsigned int plants_amount,
+                              unsigned int map_height,
+                              unsigned int map_width );
+    static unsigned int get_random_position( unsigned int vector_size );
+    unsigned int m_carnivore_amount, m_herbivore_amount, m_plants_amount;
+    std::vector<Specimen *> m_population;
+    Map m_map;
 };
 
 #endif

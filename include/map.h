@@ -3,19 +3,18 @@
 
 #include "field.h"
 
-#include <optional>
 #include <vector>
 
 class Map {
   public:
-    Map( const unsigned int height, const unsigned int width ):
-        height_( height ), width_( width ), fields_( height, std::vector<Field>( width ) ) {}
-    ~Map();
-    std::optional<Field &> get_field( const unsigned int x, const unsigned int y );
+    Map( unsigned int height, unsigned int width );
+    Field *get_field( unsigned int index );
+    unsigned int getHeight();
+    unsigned int getWidth();
 
   private:
-    unsigned int height_, width_;
-    std::vector<std::vector<Field>> fields_;
+    unsigned int m_height, m_width;
+    std::vector<Field> m_fields;
 };
 
 #endif
