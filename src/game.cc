@@ -20,6 +20,11 @@ Game::~Game() {
     }
 }
 
+
+Map & Game::get_map() {
+    return this->m_map;
+}
+
 void Game::play() {
     for ( unsigned int i = 0; i < m_map.getHeight(); i++ ) {
         for ( unsigned int j = 0; j < m_map.getWidth(); j++ ) {

@@ -9,11 +9,9 @@ using namespace std;
 
 
 int main( int argc, char *argv[] ) {
-    Game game( 1, 2, 3, 4, 5 );
-    game.play();
-
     QApplication a( argc, argv );
     MainWindow w;
+    w.setWindowState(Qt::WindowFullScreen);
     w.show();
     return a.exec();
 }
