@@ -6,25 +6,39 @@
 MainWindow::MainWindow( QWidget *parent ): QMainWindow( parent ), ui( new Ui::MainWindow ), game(CARNIVORES, HERBIVORES, 3, MAP_HEIGHT, MAP_WIDTH) {
     ui->setupUi( this );
 
-    map = new QGraphicsScene(this);
-    ui->map->setScene(map);
+    scene = new QGraphicsScene(this);
+    ui->map->setScene(scene);
 
-    QPen black(Qt::black);
-    black.setWidth(0);
+    timer = new QTimer(this);
+    connect(timer, SIGNAL(timeout()), this, SLOT(update_scene()));
+    timer->start(TIME_BETWEEN_REFRESHES);
+}
 
-    Map gamemap = game.get_map();
+MainWindow::~MainWindow() {
+    delete timer;
+    delete scene;
+    delete ui;
+}
+
+
+void MainWindow::update_scene() {
+
+    rectangles.clear();
+    scene->clear();
+
+    QPen white_pen(Qt::white);
+    white_pen.setWidth(0);
+
+    game.play();
+    Map map = game.get_map();
     for (unsigned int i = 0; i < MAP_HEIGHT * MAP_WIDTH; ++i) {
-        if(gamemap.get_field(i)->get_specimen()){
-            std::string color = gamemap.get_field(i)->get_specimen()->get_brush();
-            QString qstr = QString::fromStdString(color);
-            QColor qcolor(qstr);
+
+        if(map.get_field_by_idx(i)->get_specimen()){
+            std::string color = map.get_field_by_idx(i)->get_specimen()->get_brush_color();
+            QColor qcolor(QString::fromStdString(color));
             QBrush brush(qcolor);
-            map->addRect(SQUARE_SIZE * (i % MAP_WIDTH), SQUARE_SIZE * (i / MAP_WIDTH), SQUARE_SIZE, SQUARE_SIZE, black, brush);
+            scene->addRect(SQUARE_SIZE * (i % MAP_WIDTH), SQUARE_SIZE * (i / MAP_WIDTH), SQUARE_SIZE, SQUARE_SIZE, white_pen, brush);
         }
     }
 }
 
-MainWindow::~MainWindow() {
-    delete map;
-    delete ui;
-}
