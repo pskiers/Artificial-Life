@@ -10,3 +10,7 @@ Carnivore::Carnivore( Field *position,
 void Carnivore::describeMyself() {
     std::cout << "Beast   ";
 }
+
+std::string Carnivore::get_brush() {
+    return "red";
+}

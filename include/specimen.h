@@ -4,6 +4,7 @@
 #include "field.h"
 
 #include <iostream>
+#include <string>
 
 class Field;
 
@@ -21,6 +22,7 @@ class Specimen {
     }
     virtual ~Specimen() = default;
     virtual void describeMyself() = 0;
+    virtual std::string get_brush() = 0;
 
   private:
     static unsigned int countMaximalHunger( unsigned int speed,

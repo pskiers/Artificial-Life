@@ -11,6 +11,7 @@ class Carnivore: public Specimen {
                unsigned int sight_angle,
                unsigned int time_to_sleep );
     void describeMyself() override;
+    std::string get_brush() override;
 };
 
 #endif

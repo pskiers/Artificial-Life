@@ -10,3 +10,7 @@ Herbivore::Herbivore( Field *position,
 void Herbivore::describeMyself() {
     std::cout << "Cattle  ";
 }
+
+std::string Herbivore::get_brush() {
+    return "blue";
+}
