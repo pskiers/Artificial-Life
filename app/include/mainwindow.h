@@ -1,13 +1,14 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QMainWindow>
-#include <QGraphicsScene>
-#include <QGraphicsItem>
-#include <QTimer>
 #include "game.h"
-#include <vector>
+
+#include <QGraphicsItem>
+#include <QGraphicsScene>
+#include <QMainWindow>
+#include <QTimer>
 #include <string>
+#include <vector>
 
 
 QT_BEGIN_NAMESPACE
@@ -33,13 +34,15 @@ class MainWindow: public QMainWindow {
 
   private:
     Ui::MainWindow *ui;
-    Game game;
+    Game *game;
     QGraphicsScene *scene;
-    std::vector <QGraphicsRectItem*> rectangles;
+    std::vector<QGraphicsRectItem *> rectangles;
     QTimer *timer;
 
   private slots:
     void update_scene();
     void exit_button_pressed();
+    void reset_button_pressed();
+    void start_stop_button_pressed();
 };
 #endif    // MAINWINDOW_H

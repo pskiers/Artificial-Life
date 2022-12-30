@@ -5,8 +5,8 @@ Field *Map::get_field_by_idx( const unsigned int index ) {
 }
 // this is temporary function that will be replaced with iterator over class
 
-Field *Map::get_field(const unsigned int width, const unsigned int height) {
-    if (width >= m_width || height >= m_height) {
+Field *Map::get_field( const unsigned int width, const unsigned int height ) {
+    if ( width >= m_width || height >= m_height ) {
         return nullptr;
     }
     return &m_fields[width + m_width * height];

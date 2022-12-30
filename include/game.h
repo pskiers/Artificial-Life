@@ -17,7 +17,7 @@ class Game {
           unsigned int map_width );
     ~Game();
     void play();
-    Map & get_map();
+    Map &get_map();
 
   private:
     void generate_population( unsigned int carnivores_amount,
