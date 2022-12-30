@@ -43,12 +43,12 @@ void Game::play() {
         switch ( specimen->get_direction() ) {
             case NORTH:
                 x_diff = 0;
-                y_diff = 1;
+                y_diff = -1;
                 break;
 
             case NORTH_EAST:
                 x_diff = 1;
-                y_diff = 1;
+                y_diff = -1;
                 break;
 
             case EAST:
@@ -58,17 +58,17 @@ void Game::play() {
 
             case SOUTH_EAST:
                 x_diff = 1;
-                y_diff = -1;
+                y_diff = 1;
                 break;
 
             case SOUTH:
                 x_diff = 0;
-                y_diff = -1;
+                y_diff = 1;
                 break;
 
             case SOUTH_WEST:
                 x_diff = -1;
-                y_diff = -1;
+                y_diff = 1;
                 break;
 
             case WEST:
@@ -78,7 +78,7 @@ void Game::play() {
 
             case NORTH_WEST:
                 x_diff = -1;
-                y_diff = 1;
+                y_diff = -1;
                 break;
         }
         unsigned int prev_x = specimen->get_x_pos();

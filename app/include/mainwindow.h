@@ -6,6 +6,7 @@
 #include <QGraphicsItem>
 #include <QGraphicsScene>
 #include <QMainWindow>
+#include <QMouseEvent>
 #include <QTimer>
 #include <string>
 #include <vector>
@@ -17,6 +18,7 @@ class MainWindow;
 }
 QT_END_NAMESPACE
 
+// MAP_WIDTH * SQUARE_SIZE <= 1600 && MAP_HEIGHT * SQUARE_SIZE <= 1024
 static const unsigned int MAP_WIDTH = 200;
 static const unsigned int MAP_HEIGHT = 128;
 static const unsigned int SQUARE_SIZE = 8;
@@ -31,6 +33,7 @@ class MainWindow: public QMainWindow {
   public:
     MainWindow( QWidget *parent = nullptr );
     ~MainWindow();
+    void mousePressEvent( QMouseEvent *event );
 
   private:
     Ui::MainWindow *ui;

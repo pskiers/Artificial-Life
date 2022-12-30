@@ -24,11 +24,18 @@ class Specimen {
         m_max_hunger = countMaximalHunger( speed, sight_range, sight_angle, time_to_sleep );
     }
     virtual ~Specimen() = default;
-    virtual void describeMyself() = 0;
+    virtual std::string describeMyself() = 0;
     virtual std::string get_brush_color() = 0;
     virtual Direction get_direction() = 0;
     unsigned int get_x_pos();
     unsigned int get_y_pos();
+    unsigned int get_speed();
+    unsigned int get_sight_range();
+    unsigned int get_sight_angle();
+    unsigned int get_time_to_sleep();
+    unsigned int get_max_time_to_sleep();
+    unsigned int get_current_hunger();
+    unsigned int get_max_hunger();
     void set_x_pos( const unsigned int new_x );
     void set_y_pos( const unsigned int new_y );
 

@@ -8,8 +8,8 @@ Carnivore::Carnivore( unsigned int x_pos,
                       unsigned int time_to_sleep ):
     Specimen( x_pos, y_pos, speed, sight_range, sight_angle, time_to_sleep ) {}
 
-void Carnivore::describeMyself() {
-    std::cout << "Beast   ";
+std::string Carnivore::describeMyself() {
+    return "Mięsożerca";
 }
 
 std::string Carnivore::get_brush_color() {
@@ -18,5 +18,5 @@ std::string Carnivore::get_brush_color() {
 
 
 Direction Carnivore::get_direction() {
-    return WEST;
+    return NORTH_WEST;
 }

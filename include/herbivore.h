@@ -11,7 +11,7 @@ class Herbivore: public Specimen {
                unsigned int sight_range,
                unsigned int sight_angle,
                unsigned int time_to_sleep );
-    void describeMyself() override;
+    std::string describeMyself() override;
     std::string get_brush_color() override;
     Direction get_direction() override;
 };
