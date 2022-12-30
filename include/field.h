@@ -3,7 +3,6 @@
 
 #include "specimen.h"
 
-#include <optional>
 
 class Specimen;
 

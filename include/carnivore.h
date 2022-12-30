@@ -5,13 +5,15 @@
 
 class Carnivore: public Specimen {
   public:
-    Carnivore( Field *position,
+    Carnivore( unsigned int x_pos,
+               unsigned int y_pos,
                unsigned int speed,
                unsigned int sight_range,
                unsigned int sight_angle,
                unsigned int time_to_sleep );
-    void describeMyself() override;
-    std::string get_brush() override;
+    std::string describeMyself() override;
+    std::string get_brush_color() override;
+    Direction get_direction() override;
 };
 
 #endif

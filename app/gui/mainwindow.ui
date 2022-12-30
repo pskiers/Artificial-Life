@@ -40,15 +40,36 @@
      <rect>
       <x>0</x>
       <y>0</y>
+      <width>1604</width>
+      <height>1028</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>1604</width>
+      <height>1028</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
       <width>1600</width>
       <height>1024</height>
-     </rect>
+     </size>
+    </property>
+    <property name="baseSize">
+     <size>
+      <width>1600</width>
+      <height>1024</height>
+     </size>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
     </property>
    </widget>
    <widget class="QPushButton" name="exitButton">
     <property name="geometry">
      <rect>
-      <x>1730</x>
+      <x>1720</x>
       <y>1040</y>
       <width>89</width>
       <height>25</height>
@@ -58,7 +79,7 @@
      <string>Wyjdź</string>
     </property>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>0</x>
@@ -71,7 +92,7 @@
      <item>
       <widget class="QPushButton" name="resetButton">
        <property name="text">
-        <string>Reset</string>
+        <string>Nowa symulacja</string>
        </property>
       </widget>
      </item>
@@ -84,13 +105,13 @@
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>1630</x>
-      <y>20</y>
-      <width>271</width>
-      <height>1001</height>
+      <x>1650</x>
+      <y>0</y>
+      <width>231</width>
+      <height>1021</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout">
@@ -99,10 +120,10 @@
        <property name="title">
         <string>Parametry startowe</string>
        </property>
-       <widget class="QWidget" name="">
+       <widget class="QWidget" name="layoutWidget">
         <property name="geometry">
          <rect>
-          <x>40</x>
+          <x>20</x>
           <y>30</y>
           <width>193</width>
           <height>115</height>
@@ -110,13 +131,25 @@
         </property>
         <layout class="QGridLayout" name="gridLayout_2">
          <item row="0" column="1">
-          <widget class="QSpinBox" name="carnivoresSpinBox"/>
+          <widget class="QSpinBox" name="carnivoresSpinBox">
+           <property name="value">
+            <number>20</number>
+           </property>
+          </widget>
          </item>
          <item row="2" column="1">
-          <widget class="QSpinBox" name="plantsSpinBox"/>
+          <widget class="QSpinBox" name="plantsSpinBox">
+           <property name="value">
+            <number>3</number>
+           </property>
+          </widget>
          </item>
          <item row="1" column="1">
-          <widget class="QSpinBox" name="herbivoresSpinBox"/>
+          <widget class="QSpinBox" name="herbivoresSpinBox">
+           <property name="value">
+            <number>20</number>
+           </property>
+          </widget>
          </item>
          <item row="2" column="0">
           <widget class="QLabel" name="label_3">
@@ -148,10 +181,10 @@
        <property name="title">
         <string>Obecne populacje</string>
        </property>
-       <widget class="QWidget" name="">
+       <widget class="QWidget" name="layoutWidget">
         <property name="geometry">
          <rect>
-          <x>50</x>
+          <x>20</x>
           <y>30</y>
           <width>181</width>
           <height>65</height>
@@ -209,10 +242,10 @@
        <property name="title">
         <string>Podgląd osobnika</string>
        </property>
-       <widget class="QWidget" name="">
+       <widget class="QWidget" name="layoutWidget">
         <property name="geometry">
          <rect>
-          <x>50</x>
+          <x>20</x>
           <y>30</y>
           <width>171</width>
           <height>221</height>
@@ -299,7 +332,7 @@
          <item row="7" column="0">
           <widget class="QLabel" name="label_18">
            <property name="text">
-            <string>Maksymalny głód</string>
+            <string>Max głód</string>
            </property>
           </widget>
          </item>
