@@ -40,8 +40,10 @@ void MainWindow::update() {
     rectangles.clear();
     scene->clear();
 
+    QBrush plant_brush( Qt::green );
     QPen white_pen( Qt::white );
     white_pen.setWidth( 0 );
+
 
     game->play();
     Map map = game->get_map();
@@ -58,6 +60,13 @@ void MainWindow::update() {
                             white_pen,
                             brush );
         }
+        else if (map.get_field_by_idx( i )->has_plant())
+            scene->addRect( SQUARE_SIZE * ( i % MAP_WIDTH ),
+                            SQUARE_SIZE * ( i / MAP_WIDTH ),
+                            SQUARE_SIZE,
+                            SQUARE_SIZE,
+                            white_pen,
+                            plant_brush );
     }
     ui->carnivoresLabel->setText(QString::number(this->game->get_carnivores_amount()));
     ui->herbivoresLabel->setText(QString::number(this->game->get_herbivores_amount()));
