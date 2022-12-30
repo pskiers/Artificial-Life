@@ -40,5 +40,6 @@ class MainWindow: public QMainWindow {
 
   private slots:
     void update_scene();
+    void exit_button_pressed();
 };
 #endif    // MAINWINDOW_H

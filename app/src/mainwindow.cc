@@ -6,12 +6,19 @@
 MainWindow::MainWindow( QWidget *parent ): QMainWindow( parent ), ui( new Ui::MainWindow ), game(CARNIVORES, HERBIVORES, 3, MAP_HEIGHT, MAP_WIDTH) {
     ui->setupUi( this );
 
+    // setup scene
     scene = new QGraphicsScene(this);
     ui->map->setScene(scene);
 
+    // setup timer
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(update_scene()));
     timer->start(TIME_BETWEEN_REFRESHES);
+
+
+    // setup exit button
+    QPushButton* exitButton = MainWindow::findChild<QPushButton *>("exitButton");
+    connect(exitButton, SIGNAL(released()), this, SLOT(exit_button_pressed()));
 }
 
 MainWindow::~MainWindow() {
@@ -42,3 +49,7 @@ void MainWindow::update_scene() {
     }
 }
 
+
+void MainWindow::exit_button_pressed() {
+    QApplication::quit();
+}
