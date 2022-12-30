@@ -40,7 +40,7 @@ class MainWindow: public QMainWindow {
     QTimer *timer;
 
   private slots:
-    void update_scene();
+    void update();
     void exit_button_pressed();
     void reset_button_pressed();
     void start_stop_button_pressed();

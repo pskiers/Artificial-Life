@@ -13,21 +13,18 @@ MainWindow::MainWindow( QWidget *parent ): QMainWindow( parent ), ui( new Ui::Ma
 
     // setup timer
     timer = new QTimer( this );
-    connect( timer, SIGNAL( timeout() ), this, SLOT( update_scene() ) );
+    connect( timer, SIGNAL( timeout() ), this, SLOT( update() ) );
     timer->setInterval( TIME_BETWEEN_REFRESHES );
 
 
     // setup exit button
-    QPushButton *exitButton = MainWindow::findChild<QPushButton *>( "exitButton" );
-    connect( exitButton, SIGNAL( released() ), this, SLOT( exit_button_pressed() ) );
+    connect( ui->exitButton, SIGNAL( released() ), this, SLOT( exit_button_pressed() ) );
 
     // setup reset button
-    QPushButton *resetButton = MainWindow::findChild<QPushButton *>( "resetButton" );
-    connect( resetButton, SIGNAL( released() ), this, SLOT( reset_button_pressed() ) );
+    connect( ui->resetButton, SIGNAL( released() ), this, SLOT( reset_button_pressed() ) );
 
     // setup start/stop button
-    QPushButton *startStopButton = MainWindow::findChild<QPushButton *>( "startStopButton" );
-    connect( startStopButton, SIGNAL( released() ), this, SLOT( start_stop_button_pressed() ) );
+    connect( ui->startStopButton, SIGNAL( released() ), this, SLOT( start_stop_button_pressed() ) );
 }
 
 MainWindow::~MainWindow() {
@@ -38,7 +35,7 @@ MainWindow::~MainWindow() {
 }
 
 
-void MainWindow::update_scene() {
+void MainWindow::update() {
 
     rectangles.clear();
     scene->clear();
@@ -62,6 +59,9 @@ void MainWindow::update_scene() {
                             brush );
         }
     }
+    ui->carnivoresLabel->setText(QString::number(this->game->get_carnivores_amount()));
+    ui->herbivoresLabel->setText(QString::number(this->game->get_herbivores_amount()));
+    ui->plantLabel->setText(QString::number(this->game->get_plants_amount()));
 }
 
 
@@ -77,7 +77,11 @@ void MainWindow::reset_button_pressed() {
     this->rectangles.clear();
 
     delete this->game;
-    this->game = new Game( CARNIVORES, HERBIVORES, 3, MAP_HEIGHT, MAP_WIDTH );
+
+    unsigned int carnivores = ui->carnivoresSpinBox->value();
+    unsigned int herbivores = ui->herbivoresSpinBox->value();
+    unsigned int plants = ui->plantsSpinBox->value();
+    this->game = new Game( carnivores, herbivores, plants, MAP_HEIGHT, MAP_WIDTH );
 }
 
 void MainWindow::start_stop_button_pressed() {

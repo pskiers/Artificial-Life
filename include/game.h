@@ -18,6 +18,9 @@ class Game {
     ~Game();
     void play();
     Map &get_map();
+    unsigned int get_carnivores_amount();
+    unsigned int get_herbivores_amount();
+    unsigned int get_plants_amount();
 
   private:
     void generate_population( unsigned int carnivores_amount,

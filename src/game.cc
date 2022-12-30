@@ -25,6 +25,18 @@ Map &Game::get_map() {
     return this->m_map;
 }
 
+unsigned int Game::get_carnivores_amount() {
+    return this->m_carnivore_amount;
+}
+
+unsigned int Game::get_herbivores_amount() {
+    return this->m_herbivore_amount;
+}
+
+unsigned int Game::get_plants_amount() {
+    return this->m_plants_amount;
+}
+
 void Game::play() {
     for ( auto &specimen : this->m_population ) {
         char x_diff, y_diff;

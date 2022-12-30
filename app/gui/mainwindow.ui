@@ -58,7 +58,7 @@
      <string>Wyjdź</string>
     </property>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>0</x>
@@ -71,7 +71,7 @@
      <item>
       <widget class="QPushButton" name="resetButton">
        <property name="text">
-        <string>Reset</string>
+        <string>Nowa symulacja</string>
        </property>
       </widget>
      </item>
@@ -84,7 +84,7 @@
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>1630</x>
@@ -99,7 +99,7 @@
        <property name="title">
         <string>Parametry startowe</string>
        </property>
-       <widget class="QWidget" name="">
+       <widget class="QWidget" name="layoutWidget">
         <property name="geometry">
          <rect>
           <x>40</x>
@@ -110,13 +110,25 @@
         </property>
         <layout class="QGridLayout" name="gridLayout_2">
          <item row="0" column="1">
-          <widget class="QSpinBox" name="carnivoresSpinBox"/>
+          <widget class="QSpinBox" name="carnivoresSpinBox">
+           <property name="value">
+            <number>20</number>
+           </property>
+          </widget>
          </item>
          <item row="2" column="1">
-          <widget class="QSpinBox" name="plantsSpinBox"/>
+          <widget class="QSpinBox" name="plantsSpinBox">
+           <property name="value">
+            <number>3</number>
+           </property>
+          </widget>
          </item>
          <item row="1" column="1">
-          <widget class="QSpinBox" name="herbivoresSpinBox"/>
+          <widget class="QSpinBox" name="herbivoresSpinBox">
+           <property name="value">
+            <number>20</number>
+           </property>
+          </widget>
          </item>
          <item row="2" column="0">
           <widget class="QLabel" name="label_3">
@@ -148,7 +160,7 @@
        <property name="title">
         <string>Obecne populacje</string>
        </property>
-       <widget class="QWidget" name="">
+       <widget class="QWidget" name="layoutWidget">
         <property name="geometry">
          <rect>
           <x>50</x>
@@ -209,7 +221,7 @@
        <property name="title">
         <string>Podgląd osobnika</string>
        </property>
-       <widget class="QWidget" name="">
+       <widget class="QWidget" name="layoutWidget">
         <property name="geometry">
          <rect>
           <x>50</x>
