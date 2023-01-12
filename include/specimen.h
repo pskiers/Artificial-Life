@@ -1,5 +1,6 @@
 #ifndef SPECIMEN_H
 #define SPECIMEN_H
+#define UNUSED(expr) do { (void)(expr); } while (0)
 
 #include "field.h"
 
@@ -7,7 +8,10 @@
 #include <string>
 
 enum Direction { NORTH, NORTH_EAST, EAST, SOUTH_EAST, SOUTH, SOUTH_WEST, WEST, NORTH_WEST };
+enum CollideAction {EAT, CROSS, STOP};
 
+class Carnivore;
+class Herbivore;
 
 class Specimen {
   public:
@@ -27,6 +31,15 @@ class Specimen {
     virtual std::string describeMyself() = 0;
     virtual std::string get_brush_color() = 0;
     virtual Direction get_direction() = 0;
+    virtual Specimen* cross(Specimen *other) = 0;
+
+    // Should be used like this: A moves and walks into B = A.collide_with(B)
+    virtual CollideAction collide_with(Specimen *other) = 0;
+    virtual CollideAction accept_collide(Carnivore *other) = 0;
+    virtual CollideAction accept_collide(Herbivore *other) = 0;
+    virtual unsigned int change_carnivores_number(unsigned int current_carnivores, unsigned int change) = 0;
+    virtual unsigned int change_herbivores_number(unsigned int current_herbivores, unsigned int change) = 0;
+
     unsigned int get_x_pos();
     unsigned int get_y_pos();
     unsigned int get_speed();
