@@ -2,6 +2,7 @@
 
 #include <numeric>
 #include <random>
+#include <algorithm>
 
 
 Game::Game( const unsigned int carnivores_amount,
@@ -83,11 +84,53 @@ void Game::play() {
         }
         unsigned int prev_x = specimen->get_x_pos();
         unsigned int prev_y = specimen->get_y_pos();
-        if ( this->m_map.get_field( prev_x + x_diff, prev_y + y_diff ) ) {
-            this->m_map.get_field( prev_x + x_diff, prev_y + y_diff )->set_resident( specimen );
-            m_map.get_field( prev_x, prev_y )->set_resident( nullptr );
-            specimen->set_x_pos( prev_x + x_diff );
-            specimen->set_y_pos( prev_y + y_diff );
+        Field* destination_field = this->m_map.get_field( prev_x + x_diff, prev_y + y_diff );
+        if ( destination_field ) {
+            Specimen* destination_specimen = destination_field->get_specimen();
+            if (destination_specimen) {
+                CollideAction action = destination_specimen->collide_with(specimen);
+                switch (action)
+                {
+                case EAT:
+                    m_population.erase(std::remove(m_population.begin(), m_population.end(), destination_specimen)); // CHECK
+                    delete destination_specimen;
+                    m_herbivore_amount -= 1;
+
+                    destination_field->set_resident(specimen);
+                    m_map.get_field( prev_x, prev_y )->set_resident( nullptr );
+                    specimen->set_x_pos( prev_x + x_diff );
+                    specimen->set_y_pos( prev_y + y_diff );
+                    break;
+
+                case CROSS:
+                    for (int i = -1; i < 2; ++i) {
+                        for (int j = -1; j < 2; ++j) {
+                            Field* kid_field = this->m_map.get_field(prev_x + x_diff + i, prev_y + y_diff + j);
+                            if (kid_field && !kid_field->get_specimen()) {
+                                Specimen* kid = specimen->cross(destination_specimen);
+                                kid_field->set_resident(kid);
+                                m_population.insert(m_population.begin(), kid);    // push front because we don't want child to act just after creation
+                                kid->set_x_pos(prev_x + x_diff + i);
+                                kid->set_y_pos(prev_y + y_diff + j);
+                                m_herbivore_amount = kid->change_herbivores_number(m_herbivore_amount, 1);
+                                m_carnivore_amount = kid->change_carnivores_number(m_carnivore_amount, 1);
+                                i = 2;
+                                j = 2;
+                            }
+                        }
+                    }
+                    break;
+
+                case STOP:
+                    break;
+                }
+            }
+            else {
+                destination_field->set_resident( specimen );
+                m_map.get_field( prev_x, prev_y )->set_resident( nullptr );
+                specimen->set_x_pos( prev_x + x_diff );
+                specimen->set_y_pos( prev_y + y_diff );
+            }
         }
     }
 }

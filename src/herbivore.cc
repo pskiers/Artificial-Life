@@ -20,3 +20,39 @@ std::string Herbivore::get_brush_color() {
 Direction Herbivore::get_direction() {
     return SOUTH_EAST;
 }
+
+CollideAction Herbivore::collide_with(Specimen *other) {
+    return other->accept_collide(this);
+}
+
+CollideAction Herbivore::accept_collide(Carnivore *other) {
+    UNUSED(other);
+    return STOP;
+}
+
+CollideAction Herbivore::accept_collide(Herbivore *other) {
+    UNUSED(other);
+    return CROSS;
+}
+
+Specimen* Herbivore::cross(Specimen *other) {
+    //TODO actually cross
+    UNUSED(other);
+    return new Herbivore(
+        this->get_x_pos(),
+        this->get_y_pos(),
+        this->get_speed(),
+        this->get_sight_range(),
+        this->get_sight_angle(),
+        this->get_time_to_sleep()
+    );
+}
+
+unsigned int Herbivore::change_carnivores_number(unsigned int current_carnivores, unsigned int change) {
+    UNUSED(change);
+    return current_carnivores;
+}
+
+unsigned int Herbivore::change_herbivores_number(unsigned int current_herbivores, unsigned int change) {
+    return current_herbivores + change;
+}

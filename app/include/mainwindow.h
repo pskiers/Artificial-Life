@@ -19,9 +19,9 @@ class MainWindow;
 QT_END_NAMESPACE
 
 // MAP_WIDTH * SQUARE_SIZE <= 1600 && MAP_HEIGHT * SQUARE_SIZE <= 1024
-static const unsigned int MAP_WIDTH = 200;
-static const unsigned int MAP_HEIGHT = 128;
-static const unsigned int SQUARE_SIZE = 8;
+static const unsigned int MAP_WIDTH = 50;
+static const unsigned int MAP_HEIGHT = 32;
+static const unsigned int SQUARE_SIZE = 32;
 static const unsigned int CARNIVORES = 20;
 static const unsigned int HERBIVORES = 20;
 static const unsigned int TIME_BETWEEN_REFRESHES = 1000;
