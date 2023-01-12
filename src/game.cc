@@ -109,7 +109,7 @@ void Game::play() {
                             if (kid_field && !kid_field->get_specimen()) {
                                 Specimen* kid = specimen->cross(destination_specimen);
                                 kid_field->set_resident(kid);
-                                m_population.insert(m_population.begin(), kid);    // push front because we don't want child to act just after creation
+                                m_population.push_front(kid);    // push front because we don't want child to act just after creation
                                 kid->set_x_pos(prev_x + x_diff + i);
                                 kid->set_y_pos(prev_y + y_diff + j);
                                 m_herbivore_amount = kid->change_herbivores_number(m_herbivore_amount, 1);
