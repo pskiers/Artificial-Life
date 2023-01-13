@@ -22,7 +22,16 @@ Direction Carnivore::get_direction() {
 }
 
 CollideAction Carnivore::collide_with(Specimen *other) {
-    return other->accept_collide(this);
+    CollideAction action = other->accept_collide(this);
+    if (action == EAT) {
+        if (m_current_hunger < 5) {
+            m_current_hunger = 0;
+        }
+        else {
+            m_current_hunger -= 5;
+        }
+    }
+    return action;
 }
 
 CollideAction Carnivore::accept_collide(Carnivore *other) {
@@ -32,7 +41,7 @@ CollideAction Carnivore::accept_collide(Carnivore *other) {
 
 CollideAction Carnivore::accept_collide(Herbivore *other) {
     UNUSED(other);
-    return EAT;
+    return STOP;
 }
 
 Specimen* Carnivore::cross(Specimen *other) {

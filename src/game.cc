@@ -109,7 +109,7 @@ void Game::play() {
         if ( destination_field ) {
             Specimen* destination_specimen = destination_field->get_specimen();
             if (destination_specimen) {
-                CollideAction action = destination_specimen->collide_with(specimen);
+                CollideAction action = specimen->collide_with(destination_specimen);
                 switch (action)
                 {
                 case EAT:

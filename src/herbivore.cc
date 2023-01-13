@@ -27,7 +27,7 @@ CollideAction Herbivore::collide_with(Specimen *other) {
 
 CollideAction Herbivore::accept_collide(Carnivore *other) {
     UNUSED(other);
-    return STOP;
+    return EAT;
 }
 
 CollideAction Herbivore::accept_collide(Herbivore *other) {
