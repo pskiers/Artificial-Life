@@ -21,47 +21,39 @@ Direction Herbivore::get_direction() {
     return SOUTH_EAST;
 }
 
-CollideAction Herbivore::collide_with(Specimen *other) {
-    return other->accept_collide(this);
+CollideAction Herbivore::collide_with( Specimen *other ) {
+    return other->accept_collide( this );
 }
 
-CollideAction Herbivore::accept_collide(Carnivore *other) {
-    UNUSED(other);
+CollideAction Herbivore::accept_collide( Carnivore *other ) {
+    UNUSED( other );
     return EAT;
 }
 
-CollideAction Herbivore::accept_collide(Herbivore *other) {
-    UNUSED(other);
+CollideAction Herbivore::accept_collide( Herbivore *other ) {
+    UNUSED( other );
     return CROSS;
 }
 
-Specimen* Herbivore::cross(Specimen *other) {
-    //TODO actually cross
-    UNUSED(other);
-    return new Herbivore(
-        m_x_pos,
-        m_y_pos,
-        m_speed,
-        m_sight_range,
-        m_sight_angle,
-        m_time_to_sleep
-    );
+Specimen *Herbivore::cross( Specimen *other ) {
+    // TODO actually cross
+    UNUSED( other );
+    return new Herbivore( m_x_pos, m_y_pos, m_speed, m_sight_range, m_sight_angle, m_time_to_sleep );
 }
 
-unsigned int Herbivore::change_carnivores_number(unsigned int current_carnivores, unsigned int change) {
-    UNUSED(change);
+unsigned int Herbivore::change_carnivores_number( unsigned int current_carnivores, unsigned int change ) {
+    UNUSED( change );
     return current_carnivores;
 }
 
-unsigned int Herbivore::change_herbivores_number(unsigned int current_herbivores, unsigned int change) {
+unsigned int Herbivore::change_herbivores_number( unsigned int current_herbivores, unsigned int change ) {
     return current_herbivores + change;
 }
 
 bool Herbivore::accept_plant() {
-    if (m_current_hunger < PLANT_VALUE) {
+    if ( m_current_hunger < PLANT_VALUE ) {
         m_current_hunger = 0;
-    }
-    else {
+    } else {
         m_current_hunger -= PLANT_VALUE;
     }
     return true;

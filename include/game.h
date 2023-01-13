@@ -30,7 +30,7 @@ class Game {
                               unsigned int map_width );
     static unsigned int get_random_position( unsigned int vector_size );
     unsigned int m_carnivore_amount, m_herbivore_amount, m_plants_amount;
-    std::list <Specimen *> m_population;  // iterator stability after erase needed
+    std::list<Specimen *> m_population;    // iterator stability after erase needed
     Map m_map;
 };
 
