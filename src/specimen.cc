@@ -4,7 +4,8 @@ unsigned int Specimen::countMaximalHunger( unsigned int speed,
                                            unsigned int sight_range,
                                            unsigned int sight_angle,
                                            unsigned int time_to_sleep ) {
-    return speed + sight_range + sight_angle + time_to_sleep;
+    return speed + ZERO_HUNGER_SIGHT_RANGE - sight_range + ZERO_HUNGER_SIGHT_ANGLE - sight_angle + ZERO_HUNGER_SLEEP -
+           time_to_sleep;
 }
 
 unsigned int Specimen::get_x_pos() {
@@ -49,4 +50,29 @@ void Specimen::set_x_pos( const unsigned int new_x ) {
 
 void Specimen::set_y_pos( const unsigned int new_y ) {
     this->m_y_pos = new_y;
+}
+
+bool Specimen::starved_to_death() {
+    if ( m_current_hunger > m_max_hunger ) {
+        return true;
+    }
+    return false;
+}
+
+bool Specimen::can_move() {
+    ++m_current_hunger;
+
+    if ( m_time_to_next_move > 0 ) {
+        m_time_to_next_move -= 1;
+        return false;
+    }
+    m_time_to_next_move = m_speed;
+
+    if ( m_time_to_sleep == 0 ) {
+        m_time_to_sleep = m_max_time_to_sleep;
+        return false;
+    }
+    m_time_to_sleep -= 1;
+
+    return true;
 }

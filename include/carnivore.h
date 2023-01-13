@@ -3,6 +3,8 @@
 
 #include "specimen.h"
 
+const unsigned int HERBIVORE_VALUE = 5;
+
 class Carnivore: public Specimen {
   public:
     Carnivore( unsigned int x_pos,
@@ -14,12 +16,13 @@ class Carnivore: public Specimen {
     std::string describeMyself() override;
     std::string get_brush_color() override;
     Direction get_direction() override;
-    Specimen* cross(Specimen* other) override;
-    CollideAction collide_with(Specimen *other) override;
-    CollideAction accept_collide(Carnivore *other) override;
-    CollideAction accept_collide(Herbivore *other) override;
-    unsigned int change_carnivores_number(unsigned int current_carnivores, unsigned int change) override;
-    unsigned int change_herbivores_number(unsigned int current_herbivores, unsigned int change) override;
+    Specimen *cross( Specimen *other ) override;
+    CollideAction collide_with( Specimen *other ) override;
+    CollideAction accept_collide( Carnivore *other ) override;
+    CollideAction accept_collide( Herbivore *other ) override;
+    unsigned int change_carnivores_number( unsigned int current_carnivores, unsigned int change ) override;
+    unsigned int change_herbivores_number( unsigned int current_herbivores, unsigned int change ) override;
+    bool accept_plant() override;
 };
 
 #endif
