@@ -40,7 +40,7 @@ unsigned int Game::get_plants_amount() {
     return this->m_plants_amount;
 }
 
-std::tuple<unsigned int, unsigned int>
+std::tuple<int, int>
 Game::calculate_angle_point( unsigned int x, unsigned int y, unsigned int angle, double distance ) {
     if ( angle <= 45 || angle > 315 ) {
         x += distance;
@@ -52,7 +52,9 @@ Game::calculate_angle_point( unsigned int x, unsigned int y, unsigned int angle,
         y += distance;
         x += round( distance / tan( angle * M_PI / 180 ) );
     } else if ( 135 < angle && angle <= 225 ) {
-        x -= distance;
+        if (distance <= x) {
+            x -= distance;
+        }
         y -= round( distance * tan( angle * M_PI / 180 ) );
     } else if ( angle == 270 ) {
         x += 0;
@@ -79,7 +81,8 @@ void Game::play() {
         if ( !specimen->can_move() ) {
             continue;
         }
-
+        unsigned int prev_x = specimen->get_x_pos();
+        unsigned int prev_y = specimen->get_y_pos();
 
         std::optional<std::tuple<unsigned int, unsigned int>> closest_plant, closest_carn, closest_herb;
 
@@ -88,12 +91,17 @@ void Game::play() {
             unsigned int angle_l = ( specimen->get_orientation() + specimen->get_sight_angle() + 360 ) % 360;
             unsigned int angle_r = ( specimen->get_orientation() - specimen->get_sight_angle() + 360 ) % 360;
 
-            std::tuple<unsigned int, unsigned int> l_point =
-                calculate_angle_point( specimen->get_x_pos(), specimen->get_y_pos(), angle_l, distance );
-            std::tuple<unsigned int, unsigned int> r_point =
-                calculate_angle_point( specimen->get_x_pos(), specimen->get_y_pos(), angle_r, distance );
-
-            Field *field = m_map.get_field( std::get<0>( l_point ), std::get<1>( l_point ) );
+            std::tuple<int, int> l_point =
+                calculate_angle_point( prev_x, prev_y, angle_l, distance );
+            std::tuple<int, int> r_point =
+                calculate_angle_point( prev_x, prev_y, angle_r, distance );
+            Field *field;
+            if (std::get<0>( l_point ) < 0 || std::get<1>( l_point ) < 0) {
+                field = nullptr;
+            }
+            else {
+                field = m_map.get_field( static_cast<unsigned int> (std::get<0>( l_point )), static_cast<unsigned int> (std::get<1>( l_point )) );
+            }
             if ( field ) {
                 if ( !closest_plant.has_value() ) {
                     if ( field->has_plant() ) {
@@ -114,16 +122,22 @@ void Game::play() {
                 }
             }
             while ( l_point != r_point ) {
-                if ( std::get<0>( l_point ) < distance && std::get<1>( l_point ) == distance ) {
+                if ( std::get<0>( l_point ) < prev_x + distance && std::get<1>( l_point ) == prev_y + distance ) {
                     ++std::get<0>( l_point );
-                } else if ( std::get<0>( l_point ) == distance && std::get<1>( l_point ) > -distance ) {
+                } else if ( std::get<0>( l_point ) == prev_x + distance && std::get<1>( l_point ) > prev_y - distance ) {
                     --std::get<1>( l_point );
-                } else if ( std::get<0>( l_point ) > -distance && std::get<1>( l_point ) == -distance ) {
+                } else if ( std::get<0>( l_point ) > prev_x - distance && std::get<1>( l_point ) == prev_y - distance ) {
                     --std::get<0>( l_point );
-                } else if ( std::get<0>( l_point ) == -distance && std::get<1>( l_point ) < distance ) {
+                } else if ( std::get<0>( l_point ) == prev_x - distance && std::get<1>( l_point ) < prev_y + distance ) {
                     ++std::get<1>( l_point );
                 }
 
+                if (std::get<0>( l_point ) < 0 || std::get<1>( l_point ) < 0) {
+                    field = nullptr;
+                }
+                else {
+                    field = m_map.get_field( static_cast<unsigned int> (std::get<0>( l_point )), static_cast<unsigned int> (std::get<1>( l_point )) );
+                }
                 Field *field = m_map.get_field( std::get<0>( l_point ), std::get<1>( l_point ) );
                 if ( field ) {
                     if ( !closest_plant.has_value() ) {
@@ -199,8 +213,7 @@ void Game::play() {
         if ( x_diff == 0 && y_diff == 0 ) {
             continue;
         }
-        unsigned int prev_x = specimen->get_x_pos();
-        unsigned int prev_y = specimen->get_y_pos();
+
         Field *destination_field = this->m_map.get_field( prev_x + x_diff, prev_y + y_diff );
         if ( destination_field ) {
             Specimen *destination_specimen = destination_field->get_specimen();
@@ -276,7 +289,7 @@ void Game::generate_population( unsigned int carnivores_amount,
     for ( unsigned int i = 0; i < carnivores_amount; i++ ) {
         unsigned int index = get_random_position( positions_list.size() );
         m_population.push_back(
-            new Carnivore( positions_list[index] % map_width, positions_list[index] / map_width, 0, 1, 1, 5 ) );
+            new Carnivore( positions_list[index] % map_width, positions_list[index] / map_width, 0, 8, 30, 5 ) );
         m_map.get_field_by_idx( positions_list[index] )->set_resident( m_population.back() );
         positions_list.erase( positions_list.begin() + index );
     }
@@ -284,7 +297,7 @@ void Game::generate_population( unsigned int carnivores_amount,
     for ( unsigned int i = 0; i < herbivores_amount; i++ ) {
         unsigned int index = get_random_position( positions_list.size() );
         m_population.push_back(
-            new Herbivore( positions_list[index] % map_width, positions_list[index] / map_width, 3, 1, 1, 2 ) );
+            new Herbivore( positions_list[index] % map_width, positions_list[index] / map_width, 2, 5, 120, 2 ) );
         m_map.get_field_by_idx( positions_list[index] )->set_resident( m_population.back() );
         positions_list.erase( positions_list.begin() + index );
     }

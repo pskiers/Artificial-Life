@@ -29,7 +29,7 @@ class Game {
                               unsigned int map_height,
                               unsigned int map_width );
     static unsigned int get_random_position( unsigned int vector_size );
-    static std::tuple<unsigned int, unsigned int>
+    static std::tuple<int, int>
     calculate_angle_point( unsigned int x, unsigned int y, unsigned int angle, double distance );
     unsigned int m_carnivore_amount, m_herbivore_amount, m_plants_amount;
     std::list<Specimen *> m_population;    // iterator stability after erase needed

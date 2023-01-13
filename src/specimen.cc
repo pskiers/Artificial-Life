@@ -4,7 +4,10 @@ unsigned int Specimen::countMaximalHunger( unsigned int speed,
                                            unsigned int sight_range,
                                            unsigned int sight_angle,
                                            unsigned int time_to_sleep ) {
-    return speed + ZERO_HUNGER_SIGHT_RANGE - sight_range + ZERO_HUNGER_SIGHT_ANGLE - sight_angle + ZERO_HUNGER_SLEEP -
+    if (speed + ZERO_HUNGER_SIGHT_RANGE + ZERO_HUNGER_SIGHT_ANGLE + ZERO_HUNGER_SLEEP < sight_range * 5 + sight_angle) {
+        return 0;
+    }
+    return speed + ZERO_HUNGER_SIGHT_RANGE - sight_range * 5 + ZERO_HUNGER_SIGHT_ANGLE - sight_angle + ZERO_HUNGER_SLEEP -
            time_to_sleep;
 }
 
