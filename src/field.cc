@@ -1,15 +1,29 @@
+#include <random>
 #include "field.h"
 
-Field::Field(): m_has_plant( false ), m_resident( nullptr ) {}
+Field::Field(): m_has_plant( false ), m_resident( nullptr ), m_without_plant(0) {}
 
 void Field::update_plant_state() {
-    // TODO maybe add some probability of plants growing back, maybe probability should be dependent on the time this
-    // field has been without plants
-    m_has_plant = true;
+    if (m_has_plant) {
+        return;
+    }
+    std::random_device dev;
+    std::mt19937 rng(dev());
+    std::uniform_real_distribution<> distribution(0.0, 1.0);
+    auto random = distribution(rng);
+    if ( random + m_without_plant * 0.01 > 0.99) {
+        m_has_plant = true;
+        m_without_plant = 0;
+    }
+    ++ m_without_plant;
 }
 
 bool Field::has_plant() {
     return m_has_plant;
+}
+
+void Field::add_plant() {
+    m_has_plant = true;
 }
 
 void Field::remove_plant() {

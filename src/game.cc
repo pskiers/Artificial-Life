@@ -154,6 +154,12 @@ void Game::play() {
             }
         }
     }
+
+    for ( unsigned int i = 0; i < m_map.getHeight(); ++i ) {
+        for ( unsigned int j = 0; j < m_map.getWidth(); ++j ) {
+            m_map.get_field(j, i)->update_plant_state();
+        }
+    }
 }
 
 unsigned int Game::get_random_position( unsigned int vector_size ) {
@@ -189,7 +195,7 @@ void Game::generate_population( unsigned int carnivores_amount,
 
     for ( unsigned int i = 0; i < plants_amount; i++ ) {
         unsigned int index = get_random_position( positions_list.size() );
-        m_map.get_field_by_idx( positions_list[index] )->update_plant_state();
+        m_map.get_field_by_idx( positions_list[index] )->add_plant();
         positions_list.erase( positions_list.begin() + index );
     }
 }
