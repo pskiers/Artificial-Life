@@ -3,6 +3,8 @@
 
 #include "specimen.h"
 
+const unsigned int HERBIVORE_VALUE = 5;
+
 class Carnivore: public Specimen {
   public:
     Carnivore( unsigned int x_pos,
@@ -20,6 +22,7 @@ class Carnivore: public Specimen {
     CollideAction accept_collide(Herbivore *other) override;
     unsigned int change_carnivores_number(unsigned int current_carnivores, unsigned int change) override;
     unsigned int change_herbivores_number(unsigned int current_herbivores, unsigned int change) override;
+    bool accept_plant() override;
 };
 
 #endif

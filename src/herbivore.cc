@@ -56,3 +56,13 @@ unsigned int Herbivore::change_carnivores_number(unsigned int current_carnivores
 unsigned int Herbivore::change_herbivores_number(unsigned int current_herbivores, unsigned int change) {
     return current_herbivores + change;
 }
+
+bool Herbivore::accept_plant() {
+    if (m_current_hunger < PLANT_VALUE) {
+        m_current_hunger = 0;
+    }
+    else {
+        m_current_hunger -= PLANT_VALUE;
+    }
+    return true;
+}

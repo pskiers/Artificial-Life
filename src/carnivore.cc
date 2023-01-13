@@ -24,11 +24,11 @@ Direction Carnivore::get_direction() {
 CollideAction Carnivore::collide_with(Specimen *other) {
     CollideAction action = other->accept_collide(this);
     if (action == EAT) {
-        if (m_current_hunger < 5) {
+        if (m_current_hunger < HERBIVORE_VALUE) {
             m_current_hunger = 0;
         }
         else {
-            m_current_hunger -= 5;
+            m_current_hunger -= HERBIVORE_VALUE;
         }
     }
     return action;
@@ -64,4 +64,8 @@ unsigned int Carnivore::change_carnivores_number(unsigned int current_carnivores
 unsigned int Carnivore::change_herbivores_number(unsigned int current_herbivores, unsigned int change) {
     UNUSED(change);
     return current_herbivores;
+}
+
+bool Carnivore::accept_plant() {
+    return false;
 }

@@ -7,6 +7,10 @@
 #include <iostream>
 #include <string>
 
+const unsigned int ZERO_HUNGER_SIGHT_RANGE = 10;
+const unsigned int ZERO_HUNGER_SIGHT_ANGLE = 10;
+const unsigned int ZERO_HUNGER_SLEEP = 10;
+
 enum Direction { NORTH, NORTH_EAST, EAST, SOUTH_EAST, SOUTH, SOUTH_WEST, WEST, NORTH_WEST, STAY };
 enum CollideAction {EAT, CROSS, STOP};
 
@@ -40,6 +44,7 @@ class Specimen {
     virtual CollideAction accept_collide(Herbivore *other) = 0;
     virtual unsigned int change_carnivores_number(unsigned int current_carnivores, unsigned int change) = 0;
     virtual unsigned int change_herbivores_number(unsigned int current_herbivores, unsigned int change) = 0;
+    virtual bool accept_plant() = 0;
 
     bool starved_to_death();
     bool can_move();
