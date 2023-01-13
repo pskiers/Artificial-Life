@@ -18,18 +18,6 @@ std::string Carnivore::get_brush_color() {
 
 
 Direction Carnivore::get_direction() {
-    if (m_time_to_next_move > 0) {
-        m_time_to_next_move -= 1;
-        return STAY;
-    }
-    m_time_to_next_move = m_speed;
-
-    if (m_time_to_sleep == 0) {
-        m_time_to_sleep = m_max_time_to_sleep;
-        return STAY;
-    }
-    m_time_to_sleep -= 1;
-
     return NORTH_WEST;
 }
 

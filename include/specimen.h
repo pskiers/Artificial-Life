@@ -41,6 +41,8 @@ class Specimen {
     virtual unsigned int change_carnivores_number(unsigned int current_carnivores, unsigned int change) = 0;
     virtual unsigned int change_herbivores_number(unsigned int current_herbivores, unsigned int change) = 0;
 
+    bool starved_to_death();
+    bool can_move();
     unsigned int get_x_pos();
     unsigned int get_y_pos();
     unsigned int get_speed();

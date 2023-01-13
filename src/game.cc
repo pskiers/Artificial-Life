@@ -39,7 +39,21 @@ unsigned int Game::get_plants_amount() {
 }
 
 void Game::play() {
-    for ( auto &specimen : this->m_population ) {
+    for ( auto iter = this->m_population.begin(); iter != this->m_population.end(); ++iter) {
+        Specimen * specimen = *iter;
+        if (specimen->starved_to_death()) {
+            iter = m_population.erase(std::remove(m_population.begin(), m_population.end(), specimen));
+            m_map.get_field(specimen->get_x_pos(), specimen->get_y_pos())->set_resident(nullptr);
+            m_herbivore_amount = specimen->change_herbivores_number(m_herbivore_amount, -1);
+            m_carnivore_amount = specimen->change_carnivores_number(m_carnivore_amount, -1);
+            delete specimen;
+            continue;
+        }
+
+        if (!specimen->can_move()) {
+            continue;
+        }
+
         char x_diff, y_diff;
         switch ( specimen->get_direction() ) {
             case NORTH:
