@@ -18,6 +18,11 @@ std::string Herbivore::get_brush_color() {
 
 
 Direction Herbivore::get_direction() {
+    if (m_time_to_next_move > 0) {
+        m_time_to_next_move -= 1;
+        return STAY;
+    }
+    m_time_to_next_move = m_speed;
     return SOUTH_EAST;
 }
 
@@ -39,12 +44,12 @@ Specimen* Herbivore::cross(Specimen *other) {
     //TODO actually cross
     UNUSED(other);
     return new Herbivore(
-        this->get_x_pos(),
-        this->get_y_pos(),
-        this->get_speed(),
-        this->get_sight_range(),
-        this->get_sight_angle(),
-        this->get_time_to_sleep()
+        m_x_pos,
+        m_y_pos,
+        m_speed,
+        m_sight_range,
+        m_sight_angle,
+        m_time_to_sleep
     );
 }
 

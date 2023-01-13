@@ -81,6 +81,13 @@ void Game::play() {
                 x_diff = -1;
                 y_diff = -1;
                 break;
+            case STAY:
+                x_diff = 0;
+                y_diff = 0;
+                break;
+        }
+        if (x_diff == 0 && y_diff == 0) {
+            continue;
         }
         unsigned int prev_x = specimen->get_x_pos();
         unsigned int prev_y = specimen->get_y_pos();
@@ -92,7 +99,7 @@ void Game::play() {
                 switch (action)
                 {
                 case EAT:
-                    m_population.erase(std::remove(m_population.begin(), m_population.end(), destination_specimen)); // CHECK
+                    m_population.erase(std::remove(m_population.begin(), m_population.end(), destination_specimen));
                     delete destination_specimen;
                     m_herbivore_amount -= 1;
 
@@ -153,7 +160,7 @@ void Game::generate_population( unsigned int carnivores_amount,
     for ( unsigned int i = 0; i < carnivores_amount; i++ ) {
         unsigned int index = get_random_position( positions_list.size() );
         m_population.push_back(
-            new Carnivore( positions_list[index] % map_width, positions_list[index] / map_width, 1, 1, 1, 1 ) );
+            new Carnivore( positions_list[index] % map_width, positions_list[index] / map_width, 0, 1, 1, 1 ) );
         m_map.get_field_by_idx( positions_list[index] )->set_resident( m_population.back() );
         positions_list.erase( positions_list.begin() + index );
     }
@@ -161,7 +168,7 @@ void Game::generate_population( unsigned int carnivores_amount,
     for ( unsigned int i = 0; i < herbivores_amount; i++ ) {
         unsigned int index = get_random_position( positions_list.size() );
         m_population.push_back(
-            new Herbivore( positions_list[index] % map_width, positions_list[index] / map_width, 1, 1, 1, 1 ) );
+            new Herbivore( positions_list[index] % map_width, positions_list[index] / map_width, 3, 1, 1, 1 ) );
         m_map.get_field_by_idx( positions_list[index] )->set_resident( m_population.back() );
         positions_list.erase( positions_list.begin() + index );
     }
