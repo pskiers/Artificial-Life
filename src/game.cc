@@ -2,7 +2,9 @@
 
 #include <algorithm>
 #include <numeric>
+#include <optional>
 #include <random>
+#include <tuple>
 
 
 Game::Game( const unsigned int carnivores_amount,
@@ -38,6 +40,30 @@ unsigned int Game::get_plants_amount() {
     return this->m_plants_amount;
 }
 
+std::tuple<unsigned int, unsigned int>
+Game::calculate_angle_point( unsigned int x, unsigned int y, unsigned int angle, double distance ) {
+    if ( angle <= 45 || angle > 315 ) {
+        x += distance;
+        y += round( distance * tan( angle * M_PI / 180 ) );
+    } else if ( angle == 90 ) {
+        x += 0;
+        y += distance;
+    } else if ( 45 < angle && angle <= 135 ) {
+        y += distance;
+        x += round( distance / tan( angle * M_PI / 180 ) );
+    } else if ( 135 < angle && angle <= 225 ) {
+        x -= distance;
+        y -= round( distance * tan( angle * M_PI / 180 ) );
+    } else if ( angle == 270 ) {
+        x += 0;
+        y -= distance;
+    } else if ( 225 < angle && angle <= 315 ) {
+        y -= distance;
+        x -= round( distance / tan( angle * M_PI / 180 ) );
+    }
+    return std::tuple<unsigned int, unsigned int> { x, y };
+}
+
 void Game::play() {
     for ( auto iter = this->m_population.begin(); iter != this->m_population.end(); ++iter ) {
         Specimen *specimen = *iter;
@@ -54,8 +80,78 @@ void Game::play() {
             continue;
         }
 
+
+        std::optional<std::tuple<unsigned int, unsigned int>> closest_plant, closest_carn, closest_herb;
+
+        double distance = 1;
+        while ( distance <= specimen->get_sight_range() ) {
+            unsigned int angle_l = ( specimen->get_orientation() + specimen->get_sight_angle() + 360 ) % 360;
+            unsigned int angle_r = ( specimen->get_orientation() - specimen->get_sight_angle() + 360 ) % 360;
+
+            std::tuple<unsigned int, unsigned int> l_point =
+                calculate_angle_point( specimen->get_x_pos(), specimen->get_y_pos(), angle_l, distance );
+            std::tuple<unsigned int, unsigned int> r_point =
+                calculate_angle_point( specimen->get_x_pos(), specimen->get_y_pos(), angle_r, distance );
+
+            Field *field = m_map.get_field( std::get<0>( l_point ), std::get<1>( l_point ) );
+            if ( field ) {
+                if ( !closest_plant.has_value() ) {
+                    if ( field->has_plant() ) {
+                        closest_plant = l_point;
+                    }
+                }
+                Specimen *resident = field->get_specimen();
+                if ( resident ) {
+                    if ( resident->describeMyself() == "Mięsożerca" ) {
+                        if ( !closest_carn.has_value() ) {
+                            closest_carn = l_point;
+                        }
+                    } else {
+                        if ( !closest_herb.has_value() ) {
+                            closest_herb = l_point;
+                        }
+                    }
+                }
+            }
+            while ( l_point != r_point ) {
+                if ( std::get<0>( l_point ) < distance && std::get<1>( l_point ) == distance ) {
+                    ++std::get<0>( l_point );
+                } else if ( std::get<0>( l_point ) == distance && std::get<1>( l_point ) > -distance ) {
+                    --std::get<1>( l_point );
+                } else if ( std::get<0>( l_point ) > -distance && std::get<1>( l_point ) == -distance ) {
+                    --std::get<0>( l_point );
+                } else if ( std::get<0>( l_point ) == -distance && std::get<1>( l_point ) < distance ) {
+                    ++std::get<1>( l_point );
+                }
+
+                Field *field = m_map.get_field( std::get<0>( l_point ), std::get<1>( l_point ) );
+                if ( field ) {
+                    if ( !closest_plant.has_value() ) {
+                        if ( field->has_plant() ) {
+                            closest_plant = l_point;
+                        }
+                    }
+                    Specimen *resident = field->get_specimen();
+                    if ( resident ) {
+                        if ( resident->describeMyself() == "Mięsożerca" ) {
+                            if ( !closest_carn.has_value() ) {
+                                closest_carn = l_point;
+                            }
+                        } else {
+                            if ( !closest_herb.has_value() ) {
+                                closest_herb = l_point;
+                            }
+                        }
+                    }
+                }
+            }
+
+            ++distance;
+        }
+
+
         char x_diff, y_diff;
-        switch ( specimen->get_direction() ) {
+        switch ( specimen->get_direction( closest_plant, closest_herb, closest_carn ) ) {
             case NORTH:
                 x_diff = 0;
                 y_diff = -1;

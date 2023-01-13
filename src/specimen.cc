@@ -76,3 +76,7 @@ bool Specimen::can_move() {
 
     return true;
 }
+
+unsigned int Specimen::get_orientation() {
+    return m_orientation;
+}

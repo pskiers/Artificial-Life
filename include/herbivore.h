@@ -15,7 +15,9 @@ class Herbivore: public Specimen {
                unsigned int time_to_sleep );
     std::string describeMyself() override;
     std::string get_brush_color() override;
-    Direction get_direction() override;
+    virtual Direction get_direction( std::optional<std::tuple<unsigned int, unsigned int>> &closest_plant,
+                                     std::optional<std::tuple<unsigned int, unsigned int>> &closest_herb,
+                                     std::optional<std::tuple<unsigned int, unsigned int>> &closest_carn ) override;
     Specimen *cross( Specimen *other ) override;
     CollideAction collide_with( Specimen *other ) override;
     CollideAction accept_collide( Carnivore *other ) override;

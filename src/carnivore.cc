@@ -16,8 +16,12 @@ std::string Carnivore::get_brush_color() {
     return "red";
 }
 
-
-Direction Carnivore::get_direction() {
+Direction Carnivore::get_direction( std::optional<std::tuple<unsigned int, unsigned int>> &closest_plant,
+                                    std::optional<std::tuple<unsigned int, unsigned int>> &closest_herb,
+                                    std::optional<std::tuple<unsigned int, unsigned int>> &closest_carn ) {
+    UNUSED( closest_plant );
+    UNUSED( closest_herb );
+    UNUSED( closest_carn );
     return NORTH_WEST;
 }
 

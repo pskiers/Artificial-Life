@@ -17,7 +17,13 @@ std::string Herbivore::get_brush_color() {
 }
 
 
-Direction Herbivore::get_direction() {
+Direction Herbivore::get_direction( std::optional<std::tuple<unsigned int, unsigned int>> &closest_plant,
+                                    std::optional<std::tuple<unsigned int, unsigned int>> &closest_herb,
+                                    std::optional<std::tuple<unsigned int, unsigned int>> &closest_carn ) {
+    UNUSED( closest_plant );
+    UNUSED( closest_herb );
+    UNUSED( closest_carn );
+
     return SOUTH_EAST;
 }
 
