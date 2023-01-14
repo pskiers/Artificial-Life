@@ -22,101 +22,100 @@ Direction Carnivore::get_direction( std::optional<std::tuple<unsigned int, unsig
                                     bool edge_is_visible ) {
     UNUSED( closest_plant );
     unsigned int herb_prio = 0, carn_prio = 0;
-    if (!closest_herb.has_value() && !closest_carn.has_value() && edge_is_visible) {
-        switch (orientation_to_direction(m_orientation))
-        {
-        case NORTH:
-            m_orientation = direction_to_orientation(SOUTH);
-            return SOUTH;
+    if ( !closest_herb.has_value() && !closest_carn.has_value() && edge_is_visible ) {
+        switch ( orientation_to_direction( m_orientation ) ) {
+            case NORTH:
+                m_orientation = direction_to_orientation( SOUTH );
+                return SOUTH;
 
-        case NORTH_EAST:
-            m_orientation = direction_to_orientation(SOUTH_WEST);
-            return SOUTH_WEST;
+            case NORTH_EAST:
+                m_orientation = direction_to_orientation( SOUTH_WEST );
+                return SOUTH_WEST;
 
-        case EAST:
-            m_orientation = direction_to_orientation(WEST);
-            return WEST;
+            case EAST:
+                m_orientation = direction_to_orientation( WEST );
+                return WEST;
 
-        case SOUTH_EAST:
-            m_orientation = direction_to_orientation(NORTH_WEST);
-            return NORTH_WEST;
+            case SOUTH_EAST:
+                m_orientation = direction_to_orientation( NORTH_WEST );
+                return NORTH_WEST;
 
-        case SOUTH:
-            m_orientation = direction_to_orientation(NORTH);
-            return NORTH;
+            case SOUTH:
+                m_orientation = direction_to_orientation( NORTH );
+                return NORTH;
 
-        case SOUTH_WEST:
-            m_orientation = direction_to_orientation(NORTH_EAST);
-            return NORTH_EAST;
+            case SOUTH_WEST:
+                m_orientation = direction_to_orientation( NORTH_EAST );
+                return NORTH_EAST;
 
-        case WEST:
-            m_orientation = direction_to_orientation(EAST);
-            return EAST;
+            case WEST:
+                m_orientation = direction_to_orientation( EAST );
+                return EAST;
 
-        case NORTH_WEST:
-            m_orientation = direction_to_orientation(SOUTH_EAST);
-            return SOUTH_EAST;
-        case STAY:
-            return orientation_to_direction(m_orientation);
+            case NORTH_WEST:
+                m_orientation = direction_to_orientation( SOUTH_EAST );
+                return SOUTH_EAST;
+            case STAY:
+                return orientation_to_direction( m_orientation );
         }
     }
-    if (!closest_herb.has_value() && !closest_carn.has_value()) {
-        switch (orientation_to_direction(m_orientation))
-        {
-        case NORTH:
-            m_orientation = direction_to_orientation(NORTH_EAST);
-            return NORTH_EAST;
+    if ( !closest_herb.has_value() && !closest_carn.has_value() ) {
+        switch ( orientation_to_direction( m_orientation ) ) {
+            case NORTH:
+                m_orientation = direction_to_orientation( NORTH_EAST );
+                return NORTH_EAST;
 
-        case NORTH_EAST:
-            m_orientation = direction_to_orientation(EAST);
-            return EAST;
+            case NORTH_EAST:
+                m_orientation = direction_to_orientation( EAST );
+                return EAST;
 
-        case EAST:
-            m_orientation = direction_to_orientation(SOUTH_EAST);
-            return SOUTH_EAST;
+            case EAST:
+                m_orientation = direction_to_orientation( SOUTH_EAST );
+                return SOUTH_EAST;
 
-        case SOUTH_EAST:
-            m_orientation = direction_to_orientation(SOUTH);
-            return SOUTH;
+            case SOUTH_EAST:
+                m_orientation = direction_to_orientation( SOUTH );
+                return SOUTH;
 
-        case SOUTH:
-            m_orientation = direction_to_orientation(SOUTH_WEST);
-            return SOUTH_WEST;
+            case SOUTH:
+                m_orientation = direction_to_orientation( SOUTH_WEST );
+                return SOUTH_WEST;
 
-        case SOUTH_WEST:
-            m_orientation = direction_to_orientation(WEST);
-            return WEST;
+            case SOUTH_WEST:
+                m_orientation = direction_to_orientation( WEST );
+                return WEST;
 
-        case WEST:
-            m_orientation = direction_to_orientation(NORTH_WEST);
-            return NORTH_WEST;
+            case WEST:
+                m_orientation = direction_to_orientation( NORTH_WEST );
+                return NORTH_WEST;
 
-        case NORTH_WEST:
-            m_orientation = direction_to_orientation(NORTH);
-            return NORTH;
-        case STAY:
-            return orientation_to_direction(m_orientation);
-        }
-    }
-
-    if (closest_herb.has_value()) {
-        herb_prio = 1 + distance_to(closest_herb.value()) * 20 * m_current_hunger / m_max_hunger;
-    }
-
-    if (closest_carn.has_value()) {
-        if (m_max_hunger - m_current_hunger > 20) {
-            carn_prio = distance_to(closest_carn.value());
+            case NORTH_WEST:
+                m_orientation = direction_to_orientation( NORTH );
+                return NORTH;
+            case STAY:
+                return orientation_to_direction( m_orientation );
         }
     }
 
-    if (carn_prio < herb_prio) {
-        Direction dir = vector_to_direction(std::get<0>(closest_herb.value()) - m_x_pos, std::get<1>(closest_herb.value()) - m_y_pos);
-        m_orientation = direction_to_orientation(dir);
+    if ( closest_herb.has_value() ) {
+        herb_prio = 1 + distance_to( closest_herb.value() ) * 20 * m_current_hunger / m_max_hunger;
+    }
+
+    if ( closest_carn.has_value() ) {
+        if ( m_max_hunger - m_current_hunger > 20 ) {
+            carn_prio = distance_to( closest_carn.value() );
+        }
+    }
+
+    if ( carn_prio < herb_prio ) {
+        Direction dir = vector_to_direction( std::get<0>( closest_herb.value() ) - m_x_pos,
+                                             std::get<1>( closest_herb.value() ) - m_y_pos );
+        m_orientation = direction_to_orientation( dir );
         return dir;
-    }
-    else {
-        Direction dir = vector_to_direction(std::get<0>(closest_carn.value()) - m_x_pos, std::get<1>(closest_carn.value()) - m_y_pos);
-        m_orientation = direction_to_orientation(dir);
+    } else {
+        Direction dir = vector_to_direction( std::get<0>( closest_carn.value() ) - m_x_pos,
+                                             std::get<1>( closest_carn.value() ) - m_y_pos );
+        m_orientation = direction_to_orientation( dir );
         return dir;
     }
 }
@@ -129,8 +128,7 @@ CollideAction Carnivore::collide_with( Specimen *other ) {
         } else {
             m_current_hunger -= HERBIVORE_VALUE;
         }
-    }
-    else if (action == CROSS) {
+    } else if ( action == CROSS ) {
         m_current_hunger += 8;
     }
     return action;

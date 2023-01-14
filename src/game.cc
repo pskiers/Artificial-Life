@@ -90,17 +90,15 @@ void Game::play() {
             unsigned int angle_l = ( specimen->get_orientation() + specimen->get_sight_angle() + 360 ) % 360;
             unsigned int angle_r = ( specimen->get_orientation() - specimen->get_sight_angle() + 360 ) % 360;
 
-            std::tuple<int, int> l_point =
-                calculate_angle_point( prev_x, prev_y, angle_l, distance );
-            std::tuple<int, int> r_point =
-                calculate_angle_point( prev_x, prev_y, angle_r, distance );
+            std::tuple<int, int> l_point = calculate_angle_point( prev_x, prev_y, angle_l, distance );
+            std::tuple<int, int> r_point = calculate_angle_point( prev_x, prev_y, angle_r, distance );
             Field *field;
-            if (std::get<0>( l_point ) < 0 || std::get<1>( l_point ) < 0) {
+            if ( std::get<0>( l_point ) < 0 || std::get<1>( l_point ) < 0 ) {
                 field = nullptr;
                 edge_is_visible = true;
-            }
-            else {
-                field = m_map.get_field( static_cast<unsigned int> (std::get<0>( l_point )), static_cast<unsigned int> (std::get<1>( l_point )) );
+            } else {
+                field = m_map.get_field( static_cast<unsigned int>( std::get<0>( l_point ) ),
+                                         static_cast<unsigned int>( std::get<1>( l_point ) ) );
             }
             if ( field ) {
                 if ( !closest_plant.has_value() ) {
@@ -124,20 +122,23 @@ void Game::play() {
             while ( l_point != r_point ) {
                 if ( std::get<0>( l_point ) < prev_x + distance && std::get<1>( l_point ) == prev_y + distance ) {
                     ++std::get<0>( l_point );
-                } else if ( std::get<0>( l_point ) == prev_x + distance && std::get<1>( l_point ) > prev_y - distance ) {
+                } else if ( std::get<0>( l_point ) == prev_x + distance &&
+                            std::get<1>( l_point ) > prev_y - distance ) {
                     --std::get<1>( l_point );
-                } else if ( std::get<0>( l_point ) > prev_x - distance && std::get<1>( l_point ) == prev_y - distance ) {
+                } else if ( std::get<0>( l_point ) > prev_x - distance &&
+                            std::get<1>( l_point ) == prev_y - distance ) {
                     --std::get<0>( l_point );
-                } else if ( std::get<0>( l_point ) == prev_x - distance && std::get<1>( l_point ) < prev_y + distance ) {
+                } else if ( std::get<0>( l_point ) == prev_x - distance &&
+                            std::get<1>( l_point ) < prev_y + distance ) {
                     ++std::get<1>( l_point );
                 }
 
-                if (std::get<0>( l_point ) < 0 || std::get<1>( l_point ) < 0) {
+                if ( std::get<0>( l_point ) < 0 || std::get<1>( l_point ) < 0 ) {
                     field = nullptr;
                     edge_is_visible = true;
-                }
-                else {
-                    field = m_map.get_field( static_cast<unsigned int> (std::get<0>( l_point )), static_cast<unsigned int> (std::get<1>( l_point )) );
+                } else {
+                    field = m_map.get_field( static_cast<unsigned int>( std::get<0>( l_point ) ),
+                                             static_cast<unsigned int>( std::get<1>( l_point ) ) );
                 }
                 Field *field = m_map.get_field( std::get<0>( l_point ), std::get<1>( l_point ) );
                 if ( field ) {
