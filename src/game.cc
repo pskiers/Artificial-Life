@@ -85,6 +85,7 @@ void Game::play() {
         std::optional<std::tuple<unsigned int, unsigned int>> closest_plant, closest_carn, closest_herb;
 
         double distance = 1;
+        bool edge_is_visible = false;
         while ( distance <= specimen->get_sight_range() ) {
             unsigned int angle_l = ( specimen->get_orientation() + specimen->get_sight_angle() + 360 ) % 360;
             unsigned int angle_r = ( specimen->get_orientation() - specimen->get_sight_angle() + 360 ) % 360;
@@ -96,6 +97,7 @@ void Game::play() {
             Field *field;
             if (std::get<0>( l_point ) < 0 || std::get<1>( l_point ) < 0) {
                 field = nullptr;
+                edge_is_visible = true;
             }
             else {
                 field = m_map.get_field( static_cast<unsigned int> (std::get<0>( l_point )), static_cast<unsigned int> (std::get<1>( l_point )) );
@@ -132,6 +134,7 @@ void Game::play() {
 
                 if (std::get<0>( l_point ) < 0 || std::get<1>( l_point ) < 0) {
                     field = nullptr;
+                    edge_is_visible = true;
                 }
                 else {
                     field = m_map.get_field( static_cast<unsigned int> (std::get<0>( l_point )), static_cast<unsigned int> (std::get<1>( l_point )) );
@@ -163,7 +166,7 @@ void Game::play() {
 
 
         char x_diff, y_diff;
-        switch ( specimen->get_direction( closest_plant, closest_herb, closest_carn ) ) {
+        switch ( specimen->get_direction( closest_plant, closest_herb, closest_carn, edge_is_visible ) ) {
             case NORTH:
                 x_diff = 0;
                 y_diff = -1;

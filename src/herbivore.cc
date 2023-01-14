@@ -19,9 +19,48 @@ std::string Herbivore::get_brush_color() {
 
 Direction Herbivore::get_direction( std::optional<std::tuple<unsigned int, unsigned int>> &closest_plant,
                                     std::optional<std::tuple<unsigned int, unsigned int>> &closest_herb,
-                                    std::optional<std::tuple<unsigned int, unsigned int>> &closest_carn ) {
+                                    std::optional<std::tuple<unsigned int, unsigned int>> &closest_carn,
+                                    bool edge_is_visible ) {
 
     unsigned int herb_prio = 0, plant_prio = 0, carn_prio = 0;
+    if (!closest_herb.has_value() && !closest_carn.has_value() && edge_is_visible) {
+        switch (orientation_to_direction(m_orientation))
+        {
+        case NORTH:
+            m_orientation = direction_to_orientation(SOUTH);
+            return SOUTH;
+
+        case NORTH_EAST:
+            m_orientation = direction_to_orientation(SOUTH_WEST);
+            return SOUTH_WEST;
+
+        case EAST:
+            m_orientation = direction_to_orientation(WEST);
+            return WEST;
+
+        case SOUTH_EAST:
+            m_orientation = direction_to_orientation(NORTH_WEST);
+            return NORTH_WEST;
+
+        case SOUTH:
+            m_orientation = direction_to_orientation(NORTH);
+            return NORTH;
+
+        case SOUTH_WEST:
+            m_orientation = direction_to_orientation(NORTH_EAST);
+            return NORTH_EAST;
+
+        case WEST:
+            m_orientation = direction_to_orientation(EAST);
+            return EAST;
+
+        case NORTH_WEST:
+            m_orientation = direction_to_orientation(SOUTH_EAST);
+            return SOUTH_EAST;
+        case STAY:
+            return orientation_to_direction(m_orientation);
+        }
+    }
     if (!closest_plant.has_value() && !closest_herb.has_value() && !closest_carn.has_value()) {
         switch (orientation_to_direction(m_orientation))
         {

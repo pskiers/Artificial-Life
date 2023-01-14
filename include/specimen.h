@@ -43,7 +43,8 @@ class Specimen {
     virtual std::string get_brush_color() = 0;
     virtual Direction get_direction( std::optional<std::tuple<unsigned int, unsigned int>> &closest_plant,
                                      std::optional<std::tuple<unsigned int, unsigned int>> &closest_herb,
-                                     std::optional<std::tuple<unsigned int, unsigned int>> &closest_carn ) = 0;
+                                     std::optional<std::tuple<unsigned int, unsigned int>> &closest_carn,
+                                     bool edge_is_visible ) = 0;
     virtual Specimen *cross( Specimen *other ) = 0;
 
     // Should be used like this: A moves and walks into B = A.collide_with(B)
