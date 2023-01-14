@@ -52,9 +52,7 @@ Game::calculate_angle_point( unsigned int x, unsigned int y, unsigned int angle,
         y += distance;
         x += round( distance / tan( angle * M_PI / 180 ) );
     } else if ( 135 < angle && angle <= 225 ) {
-        if (distance <= x) {
-            x -= distance;
-        }
+        x -= distance;
         y -= round( distance * tan( angle * M_PI / 180 ) );
     } else if ( angle == 270 ) {
         x += 0;
@@ -297,7 +295,7 @@ void Game::generate_population( unsigned int carnivores_amount,
     for ( unsigned int i = 0; i < herbivores_amount; i++ ) {
         unsigned int index = get_random_position( positions_list.size() );
         m_population.push_back(
-            new Herbivore( positions_list[index] % map_width, positions_list[index] / map_width, 2, 5, 120, 2 ) );
+            new Herbivore( positions_list[index] % map_width, positions_list[index] / map_width, 1, 5, 120, 2 ) );
         m_map.get_field_by_idx( positions_list[index] )->set_resident( m_population.back() );
         positions_list.erase( positions_list.begin() + index );
     }

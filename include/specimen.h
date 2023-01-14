@@ -11,6 +11,7 @@
 #include <optional>
 #include <string>
 #include <tuple>
+#include <cmath>
 
 const unsigned int ZERO_HUNGER_SIGHT_RANGE = 90;
 const unsigned int ZERO_HUNGER_SIGHT_ANGLE = 90;
@@ -34,7 +35,7 @@ class Specimen {
         m_x_pos( x_pos ),
         m_y_pos( y_pos ), m_speed( speed ), m_sight_range( sight_range ), m_sight_angle( sight_angle ),
         m_time_to_sleep( time_to_sleep ), m_max_time_to_sleep( time_to_sleep ), m_current_hunger( 0 ),
-        m_time_to_next_move( speed ), m_orientation( 0 ) {
+        m_time_to_next_move( speed ), m_orientation( 315 ) {
         m_max_hunger = countMaximalHunger( speed, sight_range, sight_angle, time_to_sleep );
     }
     virtual ~Specimen() = default;
@@ -75,6 +76,10 @@ class Specimen {
                                             unsigned int time_to_sleep );
 
   protected:
+    unsigned int distance_to(std::tuple <unsigned int, unsigned int> to);
+    Direction vector_to_direction(int x, int y);
+    unsigned int direction_to_orientation(Direction direction);
+    Direction orientation_to_direction(unsigned int orientation);
     unsigned int m_x_pos, m_y_pos, m_speed, m_sight_range, m_sight_angle, m_time_to_sleep, m_max_time_to_sleep,
         m_current_hunger, m_max_hunger, m_time_to_next_move, m_orientation;
 };
