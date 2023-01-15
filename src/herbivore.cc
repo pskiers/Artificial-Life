@@ -19,83 +19,15 @@ std::string Herbivore::get_brush_color() {
 
 Direction Herbivore::get_direction( std::optional<std::tuple<unsigned int, unsigned int>> &closest_plant,
                                     std::optional<std::tuple<unsigned int, unsigned int>> &closest_herb,
-                                    std::optional<std::tuple<unsigned int, unsigned int>> &closest_carn,
-                                    bool edge_is_visible ) {
+                                    std::optional<std::tuple<unsigned int, unsigned int>> &closest_carn ) {
 
     unsigned int herb_prio = 0, plant_prio = 0, carn_prio = 0;
-    if ( !closest_herb.has_value() && !closest_carn.has_value() && edge_is_visible ) {
-        switch ( orientation_to_direction( orientation_ ) ) {
-            case NORTH:
-                orientation_ = direction_to_orientation( SOUTH );
-                return SOUTH;
 
-            case NORTH_EAST:
-                orientation_ = direction_to_orientation( SOUTH_WEST );
-                return SOUTH_WEST;
-
-            case EAST:
-                orientation_ = direction_to_orientation( WEST );
-                return WEST;
-
-            case SOUTH_EAST:
-                orientation_ = direction_to_orientation( NORTH_WEST );
-                return NORTH_WEST;
-
-            case SOUTH:
-                orientation_ = direction_to_orientation( NORTH );
-                return NORTH;
-
-            case SOUTH_WEST:
-                orientation_ = direction_to_orientation( NORTH_EAST );
-                return NORTH_EAST;
-
-            case WEST:
-                orientation_ = direction_to_orientation( EAST );
-                return EAST;
-
-            case NORTH_WEST:
-                orientation_ = direction_to_orientation( SOUTH_EAST );
-                return SOUTH_EAST;
-            case STAY:
-                return orientation_to_direction( orientation_ );
-        }
-    }
     if ( !closest_plant.has_value() && !closest_herb.has_value() && !closest_carn.has_value() ) {
-        switch ( orientation_to_direction( orientation_ ) ) {
-            case NORTH:
-                orientation_ = direction_to_orientation( NORTH_EAST );
-                return NORTH_EAST;
-
-            case NORTH_EAST:
-                orientation_ = direction_to_orientation( EAST );
-                return EAST;
-
-            case EAST:
-                orientation_ = direction_to_orientation( SOUTH_EAST );
-                return SOUTH_EAST;
-
-            case SOUTH_EAST:
-                orientation_ = direction_to_orientation( SOUTH );
-                return SOUTH;
-
-            case SOUTH:
-                orientation_ = direction_to_orientation( SOUTH_WEST );
-                return SOUTH_WEST;
-
-            case SOUTH_WEST:
-                orientation_ = direction_to_orientation( WEST );
-                return WEST;
-
-            case WEST:
-                orientation_ = direction_to_orientation( NORTH_WEST );
-                return NORTH_WEST;
-
-            case NORTH_WEST:
-                orientation_ = direction_to_orientation( NORTH );
-                return NORTH;
-            case STAY:
-                return orientation_to_direction( orientation_ );
-        }
+        std::random_device dev;
+        std::mt19937 rng( dev() );
+        auto distribution = std::uniform_int_distribution(static_cast<int>(NORTH), static_cast<int>(NORTH_WEST));
+        return static_cast<Direction>( distribution(rng) );
     }
     if ( closest_plant.has_value() ) {
         if (max_hunger_ <= 0){

@@ -17,8 +17,7 @@ class Herbivore: public Specimen {
     std::string get_brush_color() override;
     virtual Direction get_direction( std::optional<std::tuple<unsigned int, unsigned int>> &closest_plant,
                                      std::optional<std::tuple<unsigned int, unsigned int>> &closest_herb,
-                                     std::optional<std::tuple<unsigned int, unsigned int>> &closest_carn,
-                                     bool edge_is_visible ) override;
+                                     std::optional<std::tuple<unsigned int, unsigned int>> &closest_carn ) override;
     Specimen *cross( Specimen *other ) override;
     CollideAction collide_with( Specimen *other ) override;
     CollideAction accept_collide( Carnivore *other ) override;
