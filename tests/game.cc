@@ -14,3 +14,9 @@ TEST( GameTest, GameSpecimenAmount ) {
     EXPECT_EQ( game.get_herbivores_amount(), 3 );
     EXPECT_EQ( game.get_plants_amount(), 3 );
 }
+
+TEST( GameTest, GetMapProperites ) {
+    Game game(3,3,3,5,5);
+    EXPECT_EQ( game.get_map().getHeight(), 3);
+    EXPECT_EQ( game.get_map().getWidth(), 3);
+}
