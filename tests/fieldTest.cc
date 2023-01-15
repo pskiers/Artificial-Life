@@ -1,5 +1,6 @@
 #include "field.h"
 #include "carnivore.h"
+#include "specimen.h"
 #include <gtest/gtest.h>
 
 
@@ -34,7 +35,7 @@ TEST( FieldTest, FieldAddRemoveSetting ) {
 TEST( FieldTest, FieldAddSpecimen ) {
     Field field;
     Carnivore carnivore(1,1,1,1,1,1);
-    Specimen* ptr_spec = &carnivore;
+    Carnivore* ptr_spec = &carnivore;
     field.set_resident(ptr_spec);
-    EXPECT_EQ(field.get_specimen(), carnivore);
+    EXPECT_EQ(field.get_specimen(), dynamic_cast<Specimen*>(ptr_spec));
 }
