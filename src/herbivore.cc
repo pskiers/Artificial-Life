@@ -154,29 +154,9 @@ CollideAction Herbivore::accept_collide( Herbivore *other ) {
 }
 
 Specimen *Herbivore::cross( Specimen *other ) {
-    std::random_device dev;
-    std::mt19937 rng( dev() );
-    std::normal_distribution<> distribution( 100000.0, 6.0 );
-
-    unsigned int speed = (speed_ + other->get_speed()) / 2;
-    auto mut = distribution(rng);
-    mut = (mut >= 0) ? mut : 0;
-    unsigned int mutation = round(mut);
-    speed = (speed + mutation >= 100000  ) ? speed + mutation - 100000 : 0;
-
-    unsigned int sight_range = (sight_range_ + other->get_sight_range()) / 2;
-    mutation = distribution(rng);
-    sight_range = (sight_range + mutation >= 100000  ) ? sight_range + mutation - 100000 : 0;
-
-    unsigned int sight_angle = (sight_angle_ + other->get_sight_angle()) / 2;
-    mutation = distribution(rng);
-    sight_angle = (sight_angle + mutation >= 100000  ) ? sight_angle + mutation - 100000 : 0;
-
-    unsigned int time_to_sleep = (time_to_sleep_ + other->get_time_to_sleep()) / 2;
-    mutation = distribution(rng);
-    time_to_sleep = (time_to_sleep + mutation >= 100000  ) ? time_to_sleep + mutation - 100000 : 0;
-
-    return new Herbivore( x_pos_, y_pos_, speed, sight_range, sight_angle, time_to_sleep );
+    // TODO actually cross
+    UNUSED( other );
+    return new Herbivore( x_pos_, y_pos_, speed_, sight_range_, sight_angle_, time_to_sleep_ );
 }
 
 unsigned int Herbivore::change_carnivores_number( unsigned int current_carnivores, unsigned int change ) {

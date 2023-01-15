@@ -82,7 +82,6 @@ class Specimen {
     Direction vector_to_direction( int x, int y );
     unsigned int direction_to_orientation( Direction direction );
     Direction orientation_to_direction( unsigned int orientation );
-
     unsigned int x_pos_;
     unsigned int y_pos_;
     unsigned int speed_;
