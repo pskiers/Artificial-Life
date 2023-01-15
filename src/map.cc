@@ -1,24 +1,24 @@
 #include "map.h"
 
 Field *Map::get_field_by_idx( const unsigned int index ) {
-    return &m_fields[index];
+    return &fields_[index];
 }
 // this is temporary function that will be replaced with iterator over class
 
 Field *Map::get_field( const unsigned int width, const unsigned int height ) {
-    if ( width >= m_width || height >= m_height ) {
+    if ( width >= width_ || height >= height_ ) {
         return nullptr;
     }
-    return &m_fields[width + m_width * height];
+    return &fields_[width + width_ * height];
 }
 
 Map::Map( const unsigned int height, const unsigned int width ):
-    m_height( height ), m_width( width ), m_fields( height * width ) {}
+    height_( height ), width_( width ), fields_( height * width ) {}
 
 unsigned int Map::getHeight() {
-    return m_height;
+    return height_;
 }
 
 unsigned int Map::getWidth() {
-    return m_width;
+    return width_;
 }

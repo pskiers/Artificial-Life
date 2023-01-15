@@ -19,9 +19,9 @@ class Field {
     void set_resident( Specimen *new_resident );
 
   private:
-    bool m_has_plant;
-    Specimen *m_resident;
-    unsigned int m_without_plant;
+    bool has_plant_;
+    Specimen *resident_;
+    unsigned int without_plant_;
 };
 
 #endif

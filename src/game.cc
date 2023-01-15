@@ -12,32 +12,32 @@ Game::Game( const unsigned int carnivores_amount,
             const unsigned int plants_amount,
             const unsigned int map_height,
             const unsigned int map_width ):
-    m_carnivore_amount( carnivores_amount ),
-    m_herbivore_amount( herbivores_amount ), m_plants_amount( plants_amount ), m_map( map_height, map_width ) {
+    carnivore_amount_( carnivores_amount ),
+    herbivore_amount_( herbivores_amount ), plants_amount_( plants_amount ), map_( map_height, map_width ) {
     generate_population( carnivores_amount, herbivores_amount, plants_amount, map_height, map_width );
 }
 
 Game::~Game() {
-    for ( auto &i : m_population ) {
+    for ( auto &i : population_ ) {
         delete i;
     }
 }
 
 
 Map &Game::get_map() {
-    return this->m_map;
+    return this->map_;
 }
 
 unsigned int Game::get_carnivores_amount() {
-    return this->m_carnivore_amount;
+    return this->carnivore_amount_;
 }
 
 unsigned int Game::get_herbivores_amount() {
-    return this->m_herbivore_amount;
+    return this->herbivore_amount_;
 }
 
 unsigned int Game::get_plants_amount() {
-    return this->m_plants_amount;
+    return this->plants_amount_;
 }
 
 std::tuple<int, int>
@@ -65,13 +65,13 @@ Game::calculate_angle_point( unsigned int x, unsigned int y, unsigned int angle,
 }
 
 void Game::play() {
-    for ( auto iter = this->m_population.begin(); iter != this->m_population.end(); ++iter ) {
+    for ( auto iter = this->population_.begin(); iter != this->population_.end(); ++iter ) {
         Specimen *specimen = *iter;
         if ( specimen->starved_to_death() ) {
-            iter = m_population.erase( std::remove( m_population.begin(), m_population.end(), specimen ) );
-            m_map.get_field( specimen->get_x_pos(), specimen->get_y_pos() )->set_resident( nullptr );
-            m_herbivore_amount = specimen->change_herbivores_number( m_herbivore_amount, -1 );
-            m_carnivore_amount = specimen->change_carnivores_number( m_carnivore_amount, -1 );
+            iter = population_.erase( std::remove( population_.begin(), population_.end(), specimen ) );
+            map_.get_field( specimen->get_x_pos(), specimen->get_y_pos() )->set_resident( nullptr );
+            herbivore_amount_ = specimen->change_herbivores_number( herbivore_amount_, -1 );
+            carnivore_amount_ = specimen->change_carnivores_number( carnivore_amount_, -1 );
             delete specimen;
             continue;
         }
@@ -97,7 +97,7 @@ void Game::play() {
                 field = nullptr;
                 edge_is_visible = true;
             } else {
-                field = m_map.get_field( static_cast<unsigned int>( std::get<0>( l_point ) ),
+                field = map_.get_field( static_cast<unsigned int>( std::get<0>( l_point ) ),
                                          static_cast<unsigned int>( std::get<1>( l_point ) ) );
             }
             if ( field ) {
@@ -137,10 +137,10 @@ void Game::play() {
                     field = nullptr;
                     edge_is_visible = true;
                 } else {
-                    field = m_map.get_field( static_cast<unsigned int>( std::get<0>( l_point ) ),
+                    field = map_.get_field( static_cast<unsigned int>( std::get<0>( l_point ) ),
                                              static_cast<unsigned int>( std::get<1>( l_point ) ) );
                 }
-                Field *field = m_map.get_field( std::get<0>( l_point ), std::get<1>( l_point ) );
+                Field *field = map_.get_field( std::get<0>( l_point ), std::get<1>( l_point ) );
                 if ( field ) {
                     if ( !closest_plant.has_value() ) {
                         if ( field->has_plant() ) {
@@ -216,20 +216,20 @@ void Game::play() {
             continue;
         }
 
-        Field *destination_field = this->m_map.get_field( prev_x + x_diff, prev_y + y_diff );
+        Field *destination_field = this->map_.get_field( prev_x + x_diff, prev_y + y_diff );
         if ( destination_field ) {
             Specimen *destination_specimen = destination_field->get_specimen();
             if ( destination_specimen ) {
                 CollideAction action = specimen->collide_with( destination_specimen );
                 switch ( action ) {
                     case EAT:
-                        m_population.erase(
-                            std::remove( m_population.begin(), m_population.end(), destination_specimen ) );
+                        population_.erase(
+                            std::remove( population_.begin(), population_.end(), destination_specimen ) );
                         delete destination_specimen;
-                        m_herbivore_amount -= 1;
+                        herbivore_amount_ -= 1;
 
                         destination_field->set_resident( specimen );
-                        m_map.get_field( prev_x, prev_y )->set_resident( nullptr );
+                        map_.get_field( prev_x, prev_y )->set_resident( nullptr );
                         specimen->set_x_pos( prev_x + x_diff );
                         specimen->set_y_pos( prev_y + y_diff );
                         break;
@@ -237,16 +237,16 @@ void Game::play() {
                     case CROSS:
                         for ( int i = -1; i < 2; ++i ) {
                             for ( int j = -1; j < 2; ++j ) {
-                                Field *kid_field = this->m_map.get_field( prev_x + x_diff + i, prev_y + y_diff + j );
+                                Field *kid_field = this->map_.get_field( prev_x + x_diff + i, prev_y + y_diff + j );
                                 if ( kid_field && !kid_field->get_specimen() ) {
                                     Specimen *kid = specimen->cross( destination_specimen );
                                     kid_field->set_resident( kid );
-                                    m_population.push_front(
+                                    population_.push_front(
                                         kid );    // push front because we don't want child to act just after creation
                                     kid->set_x_pos( prev_x + x_diff + i );
                                     kid->set_y_pos( prev_y + y_diff + j );
-                                    m_herbivore_amount = kid->change_herbivores_number( m_herbivore_amount, 1 );
-                                    m_carnivore_amount = kid->change_carnivores_number( m_carnivore_amount, 1 );
+                                    herbivore_amount_ = kid->change_herbivores_number( herbivore_amount_, 1 );
+                                    carnivore_amount_ = kid->change_carnivores_number( carnivore_amount_, 1 );
                                     i = 2;
                                     j = 2;
                                 }
@@ -259,16 +259,16 @@ void Game::play() {
                 }
             } else {
                 destination_field->set_resident( specimen );
-                m_map.get_field( prev_x, prev_y )->set_resident( nullptr );
+                map_.get_field( prev_x, prev_y )->set_resident( nullptr );
                 specimen->set_x_pos( prev_x + x_diff );
                 specimen->set_y_pos( prev_y + y_diff );
             }
         }
     }
 
-    for ( unsigned int i = 0; i < m_map.getHeight(); ++i ) {
-        for ( unsigned int j = 0; j < m_map.getWidth(); ++j ) {
-            m_map.get_field( j, i )->update_plant_state();
+    for ( unsigned int i = 0; i < map_.getHeight(); ++i ) {
+        for ( unsigned int j = 0; j < map_.getWidth(); ++j ) {
+            map_.get_field( j, i )->update_plant_state();
         }
     }
 }
@@ -288,25 +288,25 @@ void Game::generate_population( unsigned int carnivores_amount,
     std::vector<int> positions_list( map_height * map_width );
     std::iota( std::begin( positions_list ), std::end( positions_list ), 0 );
 
-    for ( unsigned int i = 0; i < carnivores_amount; i++ ) {
+    for ( unsigned int i = 0; i < carnivores_amount; ++i ) {
         unsigned int index = get_random_position( positions_list.size() );
-        m_population.push_back(
+        population_.push_back(
             new Carnivore( positions_list[index] % map_width, positions_list[index] / map_width, 0, 8, 30, 5 ) );
-        m_map.get_field_by_idx( positions_list[index] )->set_resident( m_population.back() );
+        map_.get_field_by_idx( positions_list[index] )->set_resident( population_.back() );
         positions_list.erase( positions_list.begin() + index );
     }
 
-    for ( unsigned int i = 0; i < herbivores_amount; i++ ) {
+    for ( unsigned int i = 0; i < herbivores_amount; ++i ) {
         unsigned int index = get_random_position( positions_list.size() );
-        m_population.push_back(
+        population_.push_back(
             new Herbivore( positions_list[index] % map_width, positions_list[index] / map_width, 1, 5, 120, 2 ) );
-        m_map.get_field_by_idx( positions_list[index] )->set_resident( m_population.back() );
+        map_.get_field_by_idx( positions_list[index] )->set_resident( population_.back() );
         positions_list.erase( positions_list.begin() + index );
     }
 
-    for ( unsigned int i = 0; i < plants_amount; i++ ) {
+    for ( unsigned int i = 0; i < plants_amount; ++i ) {
         unsigned int index = get_random_position( positions_list.size() );
-        m_map.get_field_by_idx( positions_list[index] )->add_plant();
+        map_.get_field_by_idx( positions_list[index] )->add_plant();
         positions_list.erase( positions_list.begin() + index );
     }
 }

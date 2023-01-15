@@ -14,8 +14,9 @@ class Map {
     unsigned int getWidth();
 
   private:
-    unsigned int m_height, m_width;
-    std::vector<Field> m_fields;
+    unsigned int height_;
+    unsigned int width_;
+    std::vector<Field> fields_;
 };
 
 #endif

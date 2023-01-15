@@ -36,11 +36,11 @@ class MainWindow: public QMainWindow {
     void mousePressEvent( QMouseEvent *event );
 
   private:
-    Ui::MainWindow *ui;
-    Game *game;
-    QGraphicsScene *scene;
-    std::vector<QGraphicsRectItem *> rectangles;
-    QTimer *timer;
+    Ui::MainWindow *ui_;
+    Game *game_;
+    QGraphicsScene *scene_;
+    std::vector<QGraphicsRectItem *> rectangles_;
+    QTimer *timer_;
 
   private slots:
     void update();
