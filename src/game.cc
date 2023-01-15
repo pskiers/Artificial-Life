@@ -164,7 +164,7 @@ void Game::play() {
         }
 
 
-        char x_diff, y_diff;
+        char x_diff = 0, y_diff = 0;
         switch ( specimen->get_direction( closest_plant, closest_herb, closest_carn ) ) {
             case NORTH:
                 x_diff = 0;
@@ -284,9 +284,7 @@ void Game::play() {
     plants_amount_ = plant_nr;
 }
 
-unsigned int Game::get_random_position( unsigned int vector_size ) {
-    std::random_device random_device;
-    std::mt19937 generator( random_device() );
+unsigned int Game::get_random_position( unsigned int vector_size, std::mt19937 &generator ) {
     std::uniform_int_distribution<> distribution( 0, vector_size - 1 );
     return distribution( generator );
 }
@@ -299,24 +297,39 @@ void Game::generate_population( unsigned int carnivores_amount,
     std::vector<int> positions_list( map_height * map_width );
     std::iota( std::begin( positions_list ), std::end( positions_list ), 0 );
 
+    std::random_device random_device;
+    std::mt19937 generator( random_device() );
+    std::uniform_int_distribution<> speed_dist( 0, 3 );
+    std::uniform_int_distribution<> sight_range_dist( 2, 7 );
+    std::uniform_int_distribution<> sight_angle_dist( 30, 120 );
+    std::uniform_int_distribution<> sleep_dist( 1, 8 );
+
     for ( unsigned int i = 0; i < carnivores_amount; ++i ) {
-        unsigned int index = get_random_position( positions_list.size() );
+        unsigned int index = get_random_position( positions_list.size(), generator );
+        unsigned int speed = sleep_dist(generator);
+        unsigned int sight_range = sight_range_dist(generator);
+        unsigned int sight_angle = sight_angle_dist(generator);
+        unsigned int sleep = sleep_dist(generator);
         population_.push_back(
-            new Carnivore( positions_list[index] % map_width, positions_list[index] / map_width, 0, 8, 30, 5 ) );
+            new Carnivore( positions_list[index] % map_width, positions_list[index] / map_width, speed, sight_range, sight_angle, sleep ) );
         map_.get_field_by_idx( positions_list[index] )->set_resident( population_.back() );
         positions_list.erase( positions_list.begin() + index );
     }
 
     for ( unsigned int i = 0; i < herbivores_amount; ++i ) {
-        unsigned int index = get_random_position( positions_list.size() );
+        unsigned int index = get_random_position( positions_list.size(), generator );
+        unsigned int speed = sleep_dist(generator);
+        unsigned int sight_range = sight_range_dist(generator);
+        unsigned int sight_angle = sight_angle_dist(generator);
+        unsigned int sleep = sleep_dist(generator);
         population_.push_back(
-            new Herbivore( positions_list[index] % map_width, positions_list[index] / map_width, 1, 5, 120, 2 ) );
+            new Herbivore( positions_list[index] % map_width, positions_list[index] / map_width, speed, sight_range, sight_angle, sleep ) );
         map_.get_field_by_idx( positions_list[index] )->set_resident( population_.back() );
         positions_list.erase( positions_list.begin() + index );
     }
 
     for ( unsigned int i = 0; i < plants_amount; ++i ) {
-        unsigned int index = get_random_position( positions_list.size() );
+        unsigned int index = get_random_position( positions_list.size(), generator );
         map_.get_field_by_idx( positions_list[index] )->add_plant();
         positions_list.erase( positions_list.begin() + index );
     }

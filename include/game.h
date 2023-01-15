@@ -28,7 +28,7 @@ class Game {
                               unsigned int plants_amount,
                               unsigned int map_height,
                               unsigned int map_width );
-    static unsigned int get_random_position( unsigned int vector_size );
+    static unsigned int get_random_position( unsigned int vector_size, std::mt19937 &generator);
     static std::tuple<int, int>
     calculate_angle_point( unsigned int x, unsigned int y, unsigned int angle, double distance );
 

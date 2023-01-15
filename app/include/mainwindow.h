@@ -24,7 +24,7 @@ static const unsigned int MAP_HEIGHT = 32;
 static const unsigned int SQUARE_SIZE = 32;
 static const unsigned int CARNIVORES = 20;
 static const unsigned int HERBIVORES = 20;
-static const unsigned int TIME_BETWEEN_REFRESHES = 1000;
+static const unsigned int TIME_BETWEEN_REFRESHES = 500;
 
 
 class MainWindow: public QMainWindow {

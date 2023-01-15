@@ -3,7 +3,7 @@
 
 #include "specimen.h"
 
-const unsigned int PLANT_VALUE = 2;
+const unsigned int PLANT_VALUE = 10;
 
 class Herbivore: public Specimen {
   public:
