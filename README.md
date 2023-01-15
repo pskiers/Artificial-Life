@@ -4,10 +4,10 @@
 The goal of this project is to create an interesting version of "Game of Life".
 
 #### Requirements
-* QT 6.4 - can be downloaded from https://www.qt.io/download. To build the project only the "Desktop gcc 64-bit" part is needed.
+* QT 5.15 - can be downloaded from https://www.qt.io/download or installed on Ubuntu with `sudo apt install qtbase5-dev qt5-qmake` or `sudo apt-get install qt5-default` on older versions.
 
 #### Building and running
 * Change directory to root directory of this project
-* Run cmake -D CMAKE_PREFIX_PATH="QT_PATH/6.4.1/gcc_64" ./ where QT_PATH is the path in which the QT library has been installed
-* Rum make
-* To run the app execute ./build/Artificial_life
+* Run `cmake ./`
+* Run `make`
+* To run the app execute `./build/Artificial_life`

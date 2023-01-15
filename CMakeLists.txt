@@ -12,9 +12,7 @@ add_compile_options(-Wall -Wextra -pedantic -Werror -g)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/build")
 
-set(CMAKE_PREFIX_PATH "$ENV{HOME}/Qt/6.4.1/gcc_64")
-find_package(Qt6 REQUIRED COMPONENTS Widgets)
-qt_standard_project_setup()
+find_package(Qt5 REQUIRED COMPONENTS Widgets)
 
 include_directories(app)
 include_directories(include)
@@ -39,7 +37,7 @@ file(
 
 add_executable(artificial_life ${APPS})
 target_link_libraries(artificial_life PRIVATE app_library)
-target_link_libraries(artificial_life PRIVATE Qt6::Widgets)
+target_link_libraries(artificial_life PRIVATE Qt5::Widgets)
 
 set_target_properties(artificial_life PROPERTIES
     WIN32_EXECUTABLE ON

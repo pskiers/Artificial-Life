@@ -102,7 +102,7 @@ void MainWindow::start_stop_button_pressed() {
 void MainWindow::mousePressEvent( QMouseEvent *event ) {
     if ( this->timer->isActive() )
         return;
-    QPointF point = ui->map->mapFromGlobal( event->position() );
+    QPointF point = ui->map->mapFromGlobal( event->pos() );
     Field *field = this->game->get_map().get_field( point.x() / SQUARE_SIZE, point.y() / SQUARE_SIZE );
     if ( field && field->get_specimen() ) {
         ui->specTypeLabel->setText( QString::fromStdString( field->get_specimen()->describeMyself() ) );
