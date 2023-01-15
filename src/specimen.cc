@@ -95,7 +95,7 @@ unsigned int Specimen::distance_to( std::tuple<unsigned int, unsigned int> to ) 
     if ( y_pos_ > std::get<1>( to ) ) {
         y_dist = y_pos_ - std::get<1>( to );
     } else {
-        y_dist = std::get<0>( to ) - y_pos_;
+        y_dist = std::get<1>( to ) - y_pos_;
     }
     if ( x_dist > y_dist ) {
         return x_dist;
