@@ -266,11 +266,16 @@ void Game::play() {
         }
     }
 
+    unsigned int plant_nr = 0;
     for ( unsigned int i = 0; i < map_.getHeight(); ++i ) {
         for ( unsigned int j = 0; j < map_.getWidth(); ++j ) {
             map_.get_field( j, i )->update_plant_state();
+            if (map_.get_field( j, i )->has_plant()) {
+                ++plant_nr;
+            }
         }
     }
+    plants_amount_ = plant_nr;
 }
 
 unsigned int Game::get_random_position( unsigned int vector_size ) {
