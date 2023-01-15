@@ -24,29 +24,28 @@ Direction Herbivore::get_direction( std::optional<std::tuple<unsigned int, unsig
     unsigned int herb_prio = 0, plant_prio = 0, carn_prio = 0;
 
     if ( closest_plant.has_value() ) {
-        if (max_hunger_ <= 0){
-            herb_prio = 100000;
-        }
-        else {
-            plant_prio = 1 + distance_to( closest_plant.value() ) * 5 * current_hunger_ / max_hunger_;
+        if ( max_hunger_ <= 0 ) {
+            herb_prio = CRITICAL_PLANT_VALUE;
+        } else {
+            plant_prio = 1 + distance_to( closest_plant.value() ) * HERB_HUNGER_RATIO * current_hunger_ / max_hunger_;
         }
     }
 
     if ( closest_herb.has_value() ) {
-        if ( max_hunger_ - current_hunger_ > 20 ) {
+        if ( max_hunger_ - current_hunger_ > HERB_IGNORE_CROSSING_HUNGER ) {
             herb_prio = distance_to( closest_herb.value() );
         }
     }
 
     if ( closest_carn.has_value() ) {
-        carn_prio = 200 / distance_to( closest_carn.value() );
+        carn_prio = ATTRACTION_RATIO / distance_to( closest_carn.value() );
     }
 
     if ( carn_prio == 0 && herb_prio == 0 && plant_prio == 0 ) {
         std::random_device dev;
         std::mt19937 rng( dev() );
-        auto distribution = std::uniform_int_distribution(static_cast<int>(NORTH), static_cast<int>(NORTH_WEST));
-        return static_cast<Direction>( distribution(rng) );
+        auto distribution = std::uniform_int_distribution( static_cast<int>( NORTH ), static_cast<int>( NORTH_WEST ) );
+        return static_cast<Direction>( distribution( rng ) );
     }
 
     if ( carn_prio >= herb_prio && carn_prio >= plant_prio ) {
@@ -70,7 +69,7 @@ Direction Herbivore::get_direction( std::optional<std::tuple<unsigned int, unsig
 CollideAction Herbivore::collide_with( Specimen *other ) {
     CollideAction act = other->accept_collide( this );
     if ( act == CROSS ) {
-        current_hunger_ += 8;
+        current_hunger_ += HERB_CROSSING_COST;
     }
     return act;
 }
@@ -82,35 +81,36 @@ CollideAction Herbivore::accept_collide( Carnivore *other ) {
 
 CollideAction Herbivore::accept_collide( Herbivore *other ) {
     UNUSED( other );
-    current_hunger_ += 8;
+    current_hunger_ += HERB_CROSSING_COST;
     return CROSS;
 }
 
 Specimen *Herbivore::cross( Specimen *other ) {
     std::random_device dev;
     std::mt19937 rng( dev() );
-    auto distribution = std::uniform_real_distribution(0.0, 1.0);
-    auto distribution_mut = std::normal_distribution(100000.0, 5.0);
+    auto distribution = std::uniform_real_distribution( 0.0, 1.0 );
+    const unsigned int safe_scaler = 100000;
+    auto distribution_mut = std::normal_distribution( static_cast<double>( safe_scaler ), HERB_MUTATION_VARIATION );
 
-    unsigned int speed = (distribution(rng) > 0.5) ? speed_ : other->get_speed();
-    auto mut = round(distribution_mut(rng));
-    unsigned int pos_mut = (mut > 0) ? static_cast<unsigned int> (mut) : 0;
-    speed = (speed + pos_mut > 100000) ? speed + pos_mut - 100000 : 0;
+    unsigned int speed = ( distribution( rng ) > 0.5 ) ? speed_ : other->get_speed();
+    auto mut = round( distribution_mut( rng ) );
+    unsigned int pos_mut = ( mut > 0 ) ? static_cast<unsigned int>( mut ) : 0;
+    speed = ( speed + pos_mut > safe_scaler ) ? speed + pos_mut - safe_scaler : 0;
 
-    unsigned int sight_range = (distribution(rng) > 0.5) ? sight_range_ : other->get_sight_range();
-    mut = round(distribution_mut(rng));
-    pos_mut = (mut > 0) ? static_cast<unsigned int> (mut) : 0;
-    sight_range = (sight_range + pos_mut > 100000) ? sight_range + pos_mut - 100000 : 0;
+    unsigned int sight_range = ( distribution( rng ) > 0.5 ) ? sight_range_ : other->get_sight_range();
+    mut = round( distribution_mut( rng ) );
+    pos_mut = ( mut > 0 ) ? static_cast<unsigned int>( mut ) : 0;
+    sight_range = ( sight_range + pos_mut > safe_scaler ) ? sight_range + pos_mut - safe_scaler : 0;
 
-    unsigned int sight_angle = (distribution(rng) > 0.5) ? sight_angle_ : other->get_sight_angle();
-    mut = round(distribution_mut(rng));
-    pos_mut = (mut > 0) ? static_cast<unsigned int> (mut) : 0;
-    sight_angle = (sight_angle + pos_mut > 100000) ? sight_angle + pos_mut - 100000 : 0;
+    unsigned int sight_angle = ( distribution( rng ) > 0.5 ) ? sight_angle_ : other->get_sight_angle();
+    mut = round( distribution_mut( rng ) );
+    pos_mut = ( mut > 0 ) ? static_cast<unsigned int>( mut ) : 0;
+    sight_angle = ( sight_angle + pos_mut > safe_scaler ) ? sight_angle + pos_mut - safe_scaler : 0;
 
-    unsigned int time_to_sleep = (distribution(rng) > 0.5) ? time_to_sleep_ : other->get_time_to_sleep();
-    mut = round(distribution_mut(rng));
-    pos_mut = (mut > 0) ? static_cast<unsigned int> (mut) : 0;
-    time_to_sleep = (time_to_sleep + pos_mut > 100000) ? time_to_sleep + pos_mut - 100000 : 0;
+    unsigned int time_to_sleep = ( distribution( rng ) > 0.5 ) ? time_to_sleep_ : other->get_time_to_sleep();
+    mut = round( distribution_mut( rng ) );
+    pos_mut = ( mut > 0 ) ? static_cast<unsigned int>( mut ) : 0;
+    time_to_sleep = ( time_to_sleep + pos_mut > safe_scaler ) ? time_to_sleep + pos_mut - safe_scaler : 0;
 
     return new Herbivore( x_pos_, y_pos_, speed, sight_range, sight_angle, time_to_sleep );
 }

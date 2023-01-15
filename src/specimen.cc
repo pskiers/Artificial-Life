@@ -5,10 +5,10 @@ unsigned int Specimen::countMaximalHunger( unsigned int speed,
                                            unsigned int sight_angle,
                                            unsigned int time_to_sleep ) {
     if ( speed + ZERO_HUNGER_SIGHT_RANGE + ZERO_HUNGER_SIGHT_ANGLE + ZERO_HUNGER_SLEEP <
-         sight_range * 5 + sight_angle ) {
+         sight_range * SIGHT_RANGE_RATIO + sight_angle ) {
         return 0;
     }
-    return speed + ZERO_HUNGER_SIGHT_RANGE - sight_range * 5 + ZERO_HUNGER_SIGHT_ANGLE - sight_angle +
+    return speed + ZERO_HUNGER_SIGHT_RANGE - sight_range * SIGHT_RANGE_RATIO + ZERO_HUNGER_SIGHT_ANGLE - sight_angle +
            ZERO_HUNGER_SLEEP - time_to_sleep;
 }
 
@@ -220,6 +220,6 @@ Direction Specimen::orientation_to_direction( unsigned int orientation ) {
 }
 
 
-bool Specimen::operator==(const Specimen& other) {
+bool Specimen::operator==( const Specimen &other ) {
     return x_pos_ == other.x_pos_ && y_pos_ == other.y_pos_;
 }

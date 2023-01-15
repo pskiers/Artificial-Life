@@ -10,13 +10,14 @@
 #include <cmath>
 #include <iostream>
 #include <optional>
+#include <random>
 #include <string>
 #include <tuple>
-#include <random>
 
 const unsigned int ZERO_HUNGER_SIGHT_RANGE = 90;
 const unsigned int ZERO_HUNGER_SIGHT_ANGLE = 90;
 const unsigned int ZERO_HUNGER_SLEEP = 10;
+const unsigned int SIGHT_RANGE_RATIO = 5;
 
 enum Direction { NORTH, NORTH_EAST, EAST, SOUTH_EAST, SOUTH, SOUTH_WEST, WEST, NORTH_WEST, STAY };
 enum CollideAction { EAT, CROSS, STOP };
@@ -44,7 +45,7 @@ class Specimen {
     virtual std::string get_brush_color() = 0;
     virtual Direction get_direction( std::optional<std::tuple<unsigned int, unsigned int>> &closest_plant,
                                      std::optional<std::tuple<unsigned int, unsigned int>> &closest_herb,
-                                     std::optional<std::tuple<unsigned int, unsigned int>> &closest_carn) = 0;
+                                     std::optional<std::tuple<unsigned int, unsigned int>> &closest_carn ) = 0;
     virtual Specimen *cross( Specimen *other ) = 0;
 
     // Should be used like this: A moves and walks into B = A.collide_with(B)
@@ -69,7 +70,7 @@ class Specimen {
     unsigned int get_orientation();
     void set_x_pos( const unsigned int new_x );
     void set_y_pos( const unsigned int new_y );
-    bool operator==(const Specimen& other);
+    bool operator==( const Specimen &other );
 
   private:
     static unsigned int countMaximalHunger( unsigned int speed,

@@ -23,25 +23,24 @@ Direction Carnivore::get_direction( std::optional<std::tuple<unsigned int, unsig
     unsigned int herb_prio = 0, carn_prio = 0;
 
     if ( closest_herb.has_value() ) {
-        if (max_hunger_ <= 0){
-            herb_prio = 100000;
-        }
-        else {
-            herb_prio = 1 + distance_to( closest_herb.value() ) * 20 * current_hunger_ / max_hunger_;
+        if ( max_hunger_ <= 0 ) {
+            herb_prio = CRITICAL_HERBIVORE_VALUE;
+        } else {
+            herb_prio = 1 + distance_to( closest_herb.value() ) * CARN_HUNGER_RATIO * current_hunger_ / max_hunger_;
         }
     }
 
     if ( closest_carn.has_value() ) {
-        if ( max_hunger_ - current_hunger_ > 20 ) {
+        if ( max_hunger_ - current_hunger_ > CARN_IGNORE_CROSSING_HUNGER ) {
             carn_prio = distance_to( closest_carn.value() );
         }
     }
 
-    if ( carn_prio == 0 && herb_prio == 0) {
+    if ( carn_prio == 0 && herb_prio == 0 ) {
         std::random_device dev;
         std::mt19937 rng( dev() );
-        auto distribution = std::uniform_int_distribution(static_cast<int>(NORTH), static_cast<int>(NORTH_WEST));
-        return static_cast<Direction>( distribution(rng) );
+        auto distribution = std::uniform_int_distribution( static_cast<int>( NORTH ), static_cast<int>( NORTH_WEST ) );
+        return static_cast<Direction>( distribution( rng ) );
     }
 
     if ( carn_prio < herb_prio ) {
@@ -66,14 +65,14 @@ CollideAction Carnivore::collide_with( Specimen *other ) {
             current_hunger_ -= HERBIVORE_VALUE;
         }
     } else if ( action == CROSS ) {
-        current_hunger_ += 8;
+        current_hunger_ += CARN_CROSSING_COST;
     }
     return action;
 }
 
 CollideAction Carnivore::accept_collide( Carnivore *other ) {
     UNUSED( other );
-    current_hunger_ += 8;
+    current_hunger_ += CARN_CROSSING_COST;
     return CROSS;
 }
 
@@ -85,28 +84,30 @@ CollideAction Carnivore::accept_collide( Herbivore *other ) {
 Specimen *Carnivore::cross( Specimen *other ) {
     std::random_device dev;
     std::mt19937 rng( dev() );
-    auto distribution = std::uniform_real_distribution(0.0, 1.0);
-    auto distribution_mut = std::normal_distribution(100000.0, 5.0);
+    auto distribution = std::uniform_real_distribution( 0.0, 1.0 );
 
-    unsigned int speed = (distribution(rng) > 0.5) ? speed_ : other->get_speed();
-    auto mut = round(distribution_mut(rng));
-    unsigned int pos_mut = (mut > 0) ? static_cast<unsigned int> (mut) : 0;
-    speed = (speed + pos_mut > 100000) ? speed + pos_mut - 100000 : 0;
+    const unsigned int safe_scaler = 100000;
+    auto distribution_mut = std::normal_distribution( static_cast<double>( safe_scaler ), CARN_MUTATION_VARIATION );
 
-    unsigned int sight_range = (distribution(rng) > 0.5) ? sight_range_ : other->get_sight_range();
-    mut = round(distribution_mut(rng));
-    pos_mut = (mut > 0) ? static_cast<unsigned int> (mut) : 0;
-    sight_range = (sight_range + pos_mut > 100000) ? sight_range + pos_mut - 100000 : 0;
+    unsigned int speed = ( distribution( rng ) > 0.5 ) ? speed_ : other->get_speed();
+    auto mut = round( distribution_mut( rng ) );
+    unsigned int pos_mut = ( mut > 0 ) ? static_cast<unsigned int>( mut ) : 0;
+    speed = ( speed + pos_mut > safe_scaler ) ? speed + pos_mut - safe_scaler : 0;
 
-    unsigned int sight_angle = (distribution(rng) > 0.5) ? sight_angle_ : other->get_sight_angle();
-    mut = round(distribution_mut(rng));
-    pos_mut = (mut > 0) ? static_cast<unsigned int> (mut) : 0;
-    sight_angle = (sight_angle + pos_mut > 100000) ? sight_angle + pos_mut - 100000 : 0;
+    unsigned int sight_range = ( distribution( rng ) > 0.5 ) ? sight_range_ : other->get_sight_range();
+    mut = round( distribution_mut( rng ) );
+    pos_mut = ( mut > 0 ) ? static_cast<unsigned int>( mut ) : 0;
+    sight_range = ( sight_range + pos_mut > safe_scaler ) ? sight_range + pos_mut - safe_scaler : 0;
 
-    unsigned int time_to_sleep = (distribution(rng) > 0.5) ? time_to_sleep_ : other->get_time_to_sleep();
-    mut = round(distribution_mut(rng));
-    pos_mut = (mut > 0) ? static_cast<unsigned int> (mut) : 0;
-    time_to_sleep = (time_to_sleep + pos_mut > 100000) ? time_to_sleep + pos_mut - 100000 : 0;
+    unsigned int sight_angle = ( distribution( rng ) > 0.5 ) ? sight_angle_ : other->get_sight_angle();
+    mut = round( distribution_mut( rng ) );
+    pos_mut = ( mut > 0 ) ? static_cast<unsigned int>( mut ) : 0;
+    sight_angle = ( sight_angle + pos_mut > safe_scaler ) ? sight_angle + pos_mut - safe_scaler : 0;
+
+    unsigned int time_to_sleep = ( distribution( rng ) > 0.5 ) ? time_to_sleep_ : other->get_time_to_sleep();
+    mut = round( distribution_mut( rng ) );
+    pos_mut = ( mut > 0 ) ? static_cast<unsigned int>( mut ) : 0;
+    time_to_sleep = ( time_to_sleep + pos_mut > safe_scaler ) ? time_to_sleep + pos_mut - safe_scaler : 0;
 
     return new Carnivore( x_pos_, y_pos_, speed, sight_range, sight_angle, time_to_sleep );
 }

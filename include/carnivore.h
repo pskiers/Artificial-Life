@@ -4,6 +4,11 @@
 #include "specimen.h"
 
 const unsigned int HERBIVORE_VALUE = 20;
+const unsigned int CRITICAL_HERBIVORE_VALUE = 100000;
+const unsigned int CARN_HUNGER_RATIO = 20;
+const unsigned int CARN_IGNORE_CROSSING_HUNGER = 20;
+const unsigned int CARN_CROSSING_COST = 15;
+const double CARN_MUTATION_VARIATION = 5.0;
 
 class Carnivore: public Specimen {
   public:

@@ -97,7 +97,7 @@ void Game::play() {
                 field = nullptr;
             } else {
                 field = map_.get_field( static_cast<unsigned int>( std::get<0>( l_point ) ),
-                                         static_cast<unsigned int>( std::get<1>( l_point ) ) );
+                                        static_cast<unsigned int>( std::get<1>( l_point ) ) );
             }
             if ( field ) {
                 if ( !closest_plant.has_value() ) {
@@ -136,7 +136,7 @@ void Game::play() {
                     field = nullptr;
                 } else {
                     field = map_.get_field( static_cast<unsigned int>( std::get<0>( l_point ) ),
-                                             static_cast<unsigned int>( std::get<1>( l_point ) ) );
+                                            static_cast<unsigned int>( std::get<1>( l_point ) ) );
                 }
                 Field *field = map_.get_field( std::get<0>( l_point ), std::get<1>( l_point ) );
                 if ( field ) {
@@ -222,17 +222,17 @@ void Game::play() {
                 bool in_to_add = false;
                 switch ( action ) {
                     case EAT:
-                        for (auto iter2 = to_add_next.begin(); iter2 != to_add_next.end(); ++iter2) {
-                            if (**iter2 == *destination_specimen) {
-                                to_add_next.erase(iter2);
+                        for ( auto iter2 = to_add_next.begin(); iter2 != to_add_next.end(); ++iter2 ) {
+                            if ( **iter2 == *destination_specimen ) {
+                                to_add_next.erase( iter2 );
                                 in_to_add = true;
                                 break;
                             }
                         }
-                        if (!in_to_add) {
-                            for (auto iter2 = this->population_.begin(); iter2 != this->population_.end(); ++iter2) {
-                                if (**iter2 == *destination_specimen) {
-                                    this->population_.erase(iter2);
+                        if ( !in_to_add ) {
+                            for ( auto iter2 = this->population_.begin(); iter2 != this->population_.end(); ++iter2 ) {
+                                if ( **iter2 == *destination_specimen ) {
+                                    this->population_.erase( iter2 );
                                     break;
                                 }
                             }
@@ -253,7 +253,7 @@ void Game::play() {
                                 if ( kid_field && !kid_field->get_specimen() ) {
                                     Specimen *kid = specimen->cross( destination_specimen );
                                     kid_field->set_resident( kid );
-                                    to_add_next.push_back(kid );
+                                    to_add_next.push_back( kid );
                                     kid->set_x_pos( prev_x + x_diff + i );
                                     kid->set_y_pos( prev_y + y_diff + j );
                                     herbivore_amount_ = kid->change_herbivores_number( herbivore_amount_, 1 );
@@ -277,12 +277,12 @@ void Game::play() {
         }
     }
 
-    for (auto new_specimen : to_add_next) {
-        if (!new_specimen) {
+    for ( auto new_specimen : to_add_next ) {
+        if ( !new_specimen ) {
             continue;
         }
-        if (map_.get_field(new_specimen->get_x_pos(), new_specimen->get_y_pos())->get_specimen() == new_specimen) {
-            population_.push_back(new_specimen);
+        if ( map_.get_field( new_specimen->get_x_pos(), new_specimen->get_y_pos() )->get_specimen() == new_specimen ) {
+            population_.push_back( new_specimen );
         }
     }
 
@@ -290,7 +290,7 @@ void Game::play() {
     for ( unsigned int i = 0; i < map_.getHeight(); ++i ) {
         for ( unsigned int j = 0; j < map_.getWidth(); ++j ) {
             map_.get_field( j, i )->update_plant_state();
-            if (map_.get_field( j, i )->has_plant()) {
+            if ( map_.get_field( j, i )->has_plant() ) {
                 ++plant_nr;
             }
         }
@@ -313,31 +313,39 @@ void Game::generate_population( unsigned int carnivores_amount,
 
     std::random_device random_device;
     std::mt19937 generator( random_device() );
-    std::uniform_int_distribution<> speed_dist( 0, 3 );
-    std::uniform_int_distribution<> sight_range_dist( 2, 7 );
-    std::uniform_int_distribution<> sight_angle_dist( 30, 120 );
-    std::uniform_int_distribution<> sleep_dist( 1, 8 );
+    std::uniform_int_distribution<> speed_dist( INIT_MIN_SPEED, INIT_MAX_SPEED );
+    std::uniform_int_distribution<> sight_range_dist( INIT_MIN_SIGHT_RANGE, INIT_MAX_SIGHT_RANGE );
+    std::uniform_int_distribution<> sight_angle_dist( INIT_MIN_SIGHT_ANGLE, INIT_MAX_SIGHT_ANGLE );
+    std::uniform_int_distribution<> sleep_dist( INIT_MIN_SLEEP, INIT_MAX_SLEEP );
 
     for ( unsigned int i = 0; i < carnivores_amount; ++i ) {
         unsigned int index = get_random_position( positions_list.size(), generator );
-        unsigned int speed = sleep_dist(generator);
-        unsigned int sight_range = sight_range_dist(generator);
-        unsigned int sight_angle = sight_angle_dist(generator);
-        unsigned int sleep = sleep_dist(generator);
-        population_.push_back(
-            new Carnivore( positions_list[index] % map_width, positions_list[index] / map_width, speed, sight_range, sight_angle, sleep ) );
+        unsigned int speed = sleep_dist( generator );
+        unsigned int sight_range = sight_range_dist( generator );
+        unsigned int sight_angle = sight_angle_dist( generator );
+        unsigned int sleep = sleep_dist( generator );
+        population_.push_back( new Carnivore( positions_list[index] % map_width,
+                                              positions_list[index] / map_width,
+                                              speed,
+                                              sight_range,
+                                              sight_angle,
+                                              sleep ) );
         map_.get_field_by_idx( positions_list[index] )->set_resident( population_.back() );
         positions_list.erase( positions_list.begin() + index );
     }
 
     for ( unsigned int i = 0; i < herbivores_amount; ++i ) {
         unsigned int index = get_random_position( positions_list.size(), generator );
-        unsigned int speed = sleep_dist(generator);
-        unsigned int sight_range = sight_range_dist(generator);
-        unsigned int sight_angle = sight_angle_dist(generator);
-        unsigned int sleep = sleep_dist(generator);
-        population_.push_back(
-            new Herbivore( positions_list[index] % map_width, positions_list[index] / map_width, speed, sight_range, sight_angle, sleep ) );
+        unsigned int speed = sleep_dist( generator );
+        unsigned int sight_range = sight_range_dist( generator );
+        unsigned int sight_angle = sight_angle_dist( generator );
+        unsigned int sleep = sleep_dist( generator );
+        population_.push_back( new Herbivore( positions_list[index] % map_width,
+                                              positions_list[index] / map_width,
+                                              speed,
+                                              sight_range,
+                                              sight_angle,
+                                              sleep ) );
         map_.get_field_by_idx( positions_list[index] )->set_resident( population_.back() );
         positions_list.erase( positions_list.begin() + index );
     }

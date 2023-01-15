@@ -4,6 +4,12 @@
 #include "specimen.h"
 
 const unsigned int PLANT_VALUE = 10;
+const unsigned int CRITICAL_PLANT_VALUE = 100000;
+const unsigned int HERB_HUNGER_RATIO = 5;
+const unsigned int HERB_IGNORE_CROSSING_HUNGER = 20;
+const unsigned int HERB_CROSSING_COST = 15;
+const double HERB_MUTATION_VARIATION = 5.0;
+const unsigned int ATTRACTION_RATIO = 200;
 
 class Herbivore: public Specimen {
   public:

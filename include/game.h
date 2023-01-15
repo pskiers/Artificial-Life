@@ -8,6 +8,15 @@
 #include <iostream>
 #include <list>
 
+const unsigned int INIT_MAX_SPEED = 3;
+const unsigned int INIT_MIN_SPEED = 0;
+const unsigned int INIT_MAX_SIGHT_RANGE = 7;
+const unsigned int INIT_MIN_SIGHT_RANGE = 2;
+const unsigned int INIT_MAX_SIGHT_ANGLE = 120;
+const unsigned int INIT_MIN_SIGHT_ANGLE = 30;
+const unsigned int INIT_MAX_SLEEP = 8;
+const unsigned int INIT_MIN_SLEEP = 1;
+
 class Game {
   public:
     Game( unsigned int carnivores_amount,
@@ -28,7 +37,7 @@ class Game {
                               unsigned int plants_amount,
                               unsigned int map_height,
                               unsigned int map_width );
-    static unsigned int get_random_position( unsigned int vector_size, std::mt19937 &generator);
+    static unsigned int get_random_position( unsigned int vector_size, std::mt19937 &generator );
     static std::tuple<int, int>
     calculate_angle_point( unsigned int x, unsigned int y, unsigned int angle, double distance );
 
