@@ -218,3 +218,8 @@ Direction Specimen::orientation_to_direction( unsigned int orientation ) {
             return STAY;
     }
 }
+
+
+bool Specimen::operator==(const Specimen& other) {
+    return x_pos_ == other.x_pos_ && y_pos_ == other.y_pos_;
+}

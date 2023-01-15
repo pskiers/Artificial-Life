@@ -69,6 +69,7 @@ class Specimen {
     unsigned int get_orientation();
     void set_x_pos( const unsigned int new_x );
     void set_y_pos( const unsigned int new_y );
+    bool operator==(const Specimen& other);
 
   private:
     static unsigned int countMaximalHunger( unsigned int speed,

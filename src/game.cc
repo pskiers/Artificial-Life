@@ -69,7 +69,7 @@ void Game::play() {
     for ( auto iter = this->population_.begin(); iter != this->population_.end(); ++iter ) {
         Specimen *specimen = *iter;
         if ( specimen->starved_to_death() ) {
-            iter = population_.erase( std::remove( population_.begin(), population_.end(), specimen ) );
+            iter = population_.erase( iter );
             map_.get_field( specimen->get_x_pos(), specimen->get_y_pos() )->set_resident( nullptr );
             herbivore_amount_ = specimen->change_herbivores_number( herbivore_amount_, -1 );
             carnivore_amount_ = specimen->change_carnivores_number( carnivore_amount_, -1 );
@@ -219,10 +219,24 @@ void Game::play() {
             Specimen *destination_specimen = destination_field->get_specimen();
             if ( destination_specimen ) {
                 CollideAction action = specimen->collide_with( destination_specimen );
+                bool in_to_add = false;
                 switch ( action ) {
                     case EAT:
-                        population_.erase(
-                            std::remove( population_.begin(), population_.end(), destination_specimen ) );
+                        for (auto iter2 = to_add_next.begin(); iter2 != to_add_next.end(); ++iter2) {
+                            if (**iter2 == *destination_specimen) {
+                                to_add_next.erase(iter2);
+                                in_to_add = true;
+                                break;
+                            }
+                        }
+                        if (!in_to_add) {
+                            for (auto iter2 = this->population_.begin(); iter2 != this->population_.end(); ++iter2) {
+                                if (**iter2 == *destination_specimen) {
+                                    this->population_.erase(iter2);
+                                    break;
+                                }
+                            }
+                        }
                         delete destination_specimen;
                         herbivore_amount_ -= 1;
 
