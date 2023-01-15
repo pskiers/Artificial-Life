@@ -10,4 +10,4 @@ The goal of this project is to create an interesting version of "Game of Life".
 * Change directory to root directory of this project
 * Run `cmake ./`
 * Run `make`
-* To run the app execute `./build/Artificial_life`
+* To run the app execute `./build/build/artificial_life `

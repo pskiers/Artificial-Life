@@ -8,7 +8,7 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
-add_compile_options(-Wall -Wextra -pedantic -Werror -g)
+add_compile_options(-Wall -Wextra -pedantic -Werror -O2)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/build")
 
