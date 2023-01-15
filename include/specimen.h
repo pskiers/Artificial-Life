@@ -12,6 +12,7 @@
 #include <optional>
 #include <string>
 #include <tuple>
+#include <random>
 
 const unsigned int ZERO_HUNGER_SIGHT_RANGE = 90;
 const unsigned int ZERO_HUNGER_SIGHT_ANGLE = 90;
