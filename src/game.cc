@@ -65,6 +65,7 @@ Game::calculate_angle_point( unsigned int x, unsigned int y, unsigned int angle,
 }
 
 void Game::play() {
+    std::list<Specimen *> to_add_next;
     for ( auto iter = this->population_.begin(); iter != this->population_.end(); ++iter ) {
         Specimen *specimen = *iter;
         if ( specimen->starved_to_death() ) {
@@ -238,8 +239,7 @@ void Game::play() {
                                 if ( kid_field && !kid_field->get_specimen() ) {
                                     Specimen *kid = specimen->cross( destination_specimen );
                                     kid_field->set_resident( kid );
-                                    population_.push_front(
-                                        kid );    // push front because we don't want child to act just after creation
+                                    to_add_next.push_back(kid );
                                     kid->set_x_pos( prev_x + x_diff + i );
                                     kid->set_y_pos( prev_y + y_diff + j );
                                     herbivore_amount_ = kid->change_herbivores_number( herbivore_amount_, 1 );
@@ -261,6 +261,10 @@ void Game::play() {
                 specimen->set_y_pos( prev_y + y_diff );
             }
         }
+    }
+
+    for (auto new_specimen : to_add_next) {
+        population_.push_back(new_specimen);
     }
 
     unsigned int plant_nr = 0;
