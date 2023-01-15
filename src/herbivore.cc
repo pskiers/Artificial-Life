@@ -23,12 +23,6 @@ Direction Herbivore::get_direction( std::optional<std::tuple<unsigned int, unsig
 
     unsigned int herb_prio = 0, plant_prio = 0, carn_prio = 0;
 
-    if ( !closest_plant.has_value() && !closest_herb.has_value() && !closest_carn.has_value() ) {
-        std::random_device dev;
-        std::mt19937 rng( dev() );
-        auto distribution = std::uniform_int_distribution(static_cast<int>(NORTH), static_cast<int>(NORTH_WEST));
-        return static_cast<Direction>( distribution(rng) );
-    }
     if ( closest_plant.has_value() ) {
         if (max_hunger_ <= 0){
             herb_prio = 100000;
@@ -46,6 +40,13 @@ Direction Herbivore::get_direction( std::optional<std::tuple<unsigned int, unsig
 
     if ( closest_carn.has_value() ) {
         carn_prio = 200 / distance_to( closest_carn.value() );
+    }
+
+    if ( carn_prio == 0 && herb_prio == 0 && plant_prio == 0 ) {
+        std::random_device dev;
+        std::mt19937 rng( dev() );
+        auto distribution = std::uniform_int_distribution(static_cast<int>(NORTH), static_cast<int>(NORTH_WEST));
+        return static_cast<Direction>( distribution(rng) );
     }
 
     if ( carn_prio >= herb_prio && carn_prio >= plant_prio ) {

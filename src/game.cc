@@ -264,7 +264,12 @@ void Game::play() {
     }
 
     for (auto new_specimen : to_add_next) {
-        population_.push_back(new_specimen);
+        if (!new_specimen) {
+            continue;
+        }
+        if (map_.get_field(new_specimen->get_x_pos(), new_specimen->get_y_pos())->get_specimen() == new_specimen) {
+            population_.push_back(new_specimen);
+        }
     }
 
     unsigned int plant_nr = 0;

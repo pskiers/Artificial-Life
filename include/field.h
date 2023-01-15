@@ -3,7 +3,7 @@
 
 #include "specimen.h"
 
-const double INCREASE_RATIO = 0.01;
+const double INCREASE_RATIO = 0.0001;
 const double THRESHOLD = 0.99;
 
 class Specimen;
