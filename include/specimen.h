@@ -32,11 +32,11 @@ class Specimen {
               unsigned int sight_angle,
               unsigned int time_to_sleep ):
 
-        m_x_pos( x_pos ),
-        m_y_pos( y_pos ), m_speed( speed ), m_sight_range( sight_range ), m_sight_angle( sight_angle ),
-        m_time_to_sleep( time_to_sleep ), m_max_time_to_sleep( time_to_sleep ), m_current_hunger( 0 ),
-        m_time_to_next_move( speed ), m_orientation( 315 ) {
-        m_max_hunger = countMaximalHunger( speed, sight_range, sight_angle, time_to_sleep );
+        x_pos_( x_pos ),
+        y_pos_( y_pos ), speed_( speed ), sight_range_( sight_range ), sight_angle_( sight_angle ),
+        time_to_sleep_( time_to_sleep ), max_time_to_sleep_( time_to_sleep ), current_hunger_( 0 ),
+        time_to_next_move_( speed ), orientation_( 315 ) {
+        max_hunger_ = countMaximalHunger( speed, sight_range, sight_angle, time_to_sleep );
     }
     virtual ~Specimen() = default;
     virtual std::string describeMyself() = 0;
@@ -81,8 +81,18 @@ class Specimen {
     Direction vector_to_direction( int x, int y );
     unsigned int direction_to_orientation( Direction direction );
     Direction orientation_to_direction( unsigned int orientation );
-    unsigned int m_x_pos, m_y_pos, m_speed, m_sight_range, m_sight_angle, m_time_to_sleep, m_max_time_to_sleep,
-        m_current_hunger, m_max_hunger, m_time_to_next_move, m_orientation;
+
+    unsigned int x_pos_;
+    unsigned int y_pos_;
+    unsigned int speed_;
+    unsigned int sight_range_;
+    unsigned int sight_angle_;
+    unsigned int time_to_sleep_;
+    unsigned int max_time_to_sleep_;
+    unsigned int current_hunger_;
+    unsigned int max_hunger_;
+    unsigned int time_to_next_move_;
+    unsigned int orientation_;
 };
 
 #endif

@@ -13,89 +13,89 @@ unsigned int Specimen::countMaximalHunger( unsigned int speed,
 }
 
 unsigned int Specimen::get_x_pos() {
-    return this->m_x_pos;
+    return this->x_pos_;
 }
 
 unsigned int Specimen::get_y_pos() {
-    return this->m_y_pos;
+    return this->y_pos_;
 }
 
 unsigned int Specimen::get_speed() {
-    return this->m_speed;
+    return this->speed_;
 }
 
 unsigned int Specimen::get_sight_range() {
-    return this->m_sight_range;
+    return this->sight_range_;
 }
 
 unsigned int Specimen::get_sight_angle() {
-    return this->m_sight_angle;
+    return this->sight_angle_;
 }
 
 unsigned int Specimen::get_time_to_sleep() {
-    return this->m_time_to_sleep;
+    return this->time_to_sleep_;
 }
 
 unsigned int Specimen::get_max_time_to_sleep() {
-    return this->m_max_time_to_sleep;
+    return this->max_time_to_sleep_;
 }
 
 unsigned int Specimen::get_current_hunger() {
-    return this->m_current_hunger;
+    return this->current_hunger_;
 }
 
 unsigned int Specimen::get_max_hunger() {
-    return this->m_max_hunger;
+    return this->max_hunger_;
 }
 
 void Specimen::set_x_pos( const unsigned int new_x ) {
-    this->m_x_pos = new_x;
+    this->x_pos_ = new_x;
 }
 
 void Specimen::set_y_pos( const unsigned int new_y ) {
-    this->m_y_pos = new_y;
+    this->y_pos_ = new_y;
 }
 
 bool Specimen::starved_to_death() {
-    if ( m_current_hunger > m_max_hunger ) {
+    if ( current_hunger_ > max_hunger_ ) {
         return true;
     }
     return false;
 }
 
 bool Specimen::can_move() {
-    ++m_current_hunger;
+    ++current_hunger_;
 
-    if ( m_time_to_next_move > 0 ) {
-        m_time_to_next_move -= 1;
+    if ( time_to_next_move_ > 0 ) {
+        time_to_next_move_ -= 1;
         return false;
     }
-    m_time_to_next_move = m_speed;
+    time_to_next_move_ = speed_;
 
-    if ( m_time_to_sleep == 0 ) {
-        m_time_to_sleep = m_max_time_to_sleep;
+    if ( time_to_sleep_ == 0 ) {
+        time_to_sleep_ = max_time_to_sleep_;
         return false;
     }
-    m_time_to_sleep -= 1;
+    time_to_sleep_ -= 1;
 
     return true;
 }
 
 unsigned int Specimen::get_orientation() {
-    return m_orientation;
+    return orientation_;
 }
 
 unsigned int Specimen::distance_to( std::tuple<unsigned int, unsigned int> to ) {
     unsigned int x_dist, y_dist;
-    if ( m_x_pos > std::get<0>( to ) ) {
-        x_dist = m_x_pos - std::get<0>( to );
+    if ( x_pos_ > std::get<0>( to ) ) {
+        x_dist = x_pos_ - std::get<0>( to );
     } else {
-        x_dist = std::get<0>( to ) - m_x_pos;
+        x_dist = std::get<0>( to ) - x_pos_;
     }
-    if ( m_y_pos > std::get<1>( to ) ) {
-        y_dist = m_y_pos - std::get<1>( to );
+    if ( y_pos_ > std::get<1>( to ) ) {
+        y_dist = y_pos_ - std::get<1>( to );
     } else {
-        y_dist = std::get<0>( to ) - m_y_pos;
+        y_dist = std::get<0>( to ) - y_pos_;
     }
     if ( x_dist > y_dist ) {
         return x_dist;

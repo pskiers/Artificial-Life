@@ -23,99 +23,99 @@ Direction Carnivore::get_direction( std::optional<std::tuple<unsigned int, unsig
     UNUSED( closest_plant );
     unsigned int herb_prio = 0, carn_prio = 0;
     if ( !closest_herb.has_value() && !closest_carn.has_value() && edge_is_visible ) {
-        switch ( orientation_to_direction( m_orientation ) ) {
+        switch ( orientation_to_direction( orientation_ ) ) {
             case NORTH:
-                m_orientation = direction_to_orientation( SOUTH );
+                orientation_ = direction_to_orientation( SOUTH );
                 return SOUTH;
 
             case NORTH_EAST:
-                m_orientation = direction_to_orientation( SOUTH_WEST );
+                orientation_ = direction_to_orientation( SOUTH_WEST );
                 return SOUTH_WEST;
 
             case EAST:
-                m_orientation = direction_to_orientation( WEST );
+                orientation_ = direction_to_orientation( WEST );
                 return WEST;
 
             case SOUTH_EAST:
-                m_orientation = direction_to_orientation( NORTH_WEST );
+                orientation_ = direction_to_orientation( NORTH_WEST );
                 return NORTH_WEST;
 
             case SOUTH:
-                m_orientation = direction_to_orientation( NORTH );
+                orientation_ = direction_to_orientation( NORTH );
                 return NORTH;
 
             case SOUTH_WEST:
-                m_orientation = direction_to_orientation( NORTH_EAST );
+                orientation_ = direction_to_orientation( NORTH_EAST );
                 return NORTH_EAST;
 
             case WEST:
-                m_orientation = direction_to_orientation( EAST );
+                orientation_ = direction_to_orientation( EAST );
                 return EAST;
 
             case NORTH_WEST:
-                m_orientation = direction_to_orientation( SOUTH_EAST );
+                orientation_ = direction_to_orientation( SOUTH_EAST );
                 return SOUTH_EAST;
             case STAY:
-                return orientation_to_direction( m_orientation );
+                return orientation_to_direction( orientation_ );
         }
     }
     if ( !closest_herb.has_value() && !closest_carn.has_value() ) {
-        switch ( orientation_to_direction( m_orientation ) ) {
+        switch ( orientation_to_direction( orientation_ ) ) {
             case NORTH:
-                m_orientation = direction_to_orientation( NORTH_EAST );
+                orientation_ = direction_to_orientation( NORTH_EAST );
                 return NORTH_EAST;
 
             case NORTH_EAST:
-                m_orientation = direction_to_orientation( EAST );
+                orientation_ = direction_to_orientation( EAST );
                 return EAST;
 
             case EAST:
-                m_orientation = direction_to_orientation( SOUTH_EAST );
+                orientation_ = direction_to_orientation( SOUTH_EAST );
                 return SOUTH_EAST;
 
             case SOUTH_EAST:
-                m_orientation = direction_to_orientation( SOUTH );
+                orientation_ = direction_to_orientation( SOUTH );
                 return SOUTH;
 
             case SOUTH:
-                m_orientation = direction_to_orientation( SOUTH_WEST );
+                orientation_ = direction_to_orientation( SOUTH_WEST );
                 return SOUTH_WEST;
 
             case SOUTH_WEST:
-                m_orientation = direction_to_orientation( WEST );
+                orientation_ = direction_to_orientation( WEST );
                 return WEST;
 
             case WEST:
-                m_orientation = direction_to_orientation( NORTH_WEST );
+                orientation_ = direction_to_orientation( NORTH_WEST );
                 return NORTH_WEST;
 
             case NORTH_WEST:
-                m_orientation = direction_to_orientation( NORTH );
+                orientation_ = direction_to_orientation( NORTH );
                 return NORTH;
             case STAY:
-                return orientation_to_direction( m_orientation );
+                return orientation_to_direction( orientation_ );
         }
     }
 
     if ( closest_herb.has_value() ) {
-        herb_prio = 1 + distance_to( closest_herb.value() ) * 20 * m_current_hunger / m_max_hunger;
+        herb_prio = 1 + distance_to( closest_herb.value() ) * 20 * current_hunger_ / max_hunger_;
     }
 
     if ( closest_carn.has_value() ) {
-        if ( m_max_hunger - m_current_hunger > 20 ) {
+        if ( max_hunger_ - current_hunger_ > 20 ) {
             carn_prio = distance_to( closest_carn.value() );
         }
     }
 
     if ( carn_prio < herb_prio ) {
-        Direction dir = vector_to_direction( std::get<0>( closest_herb.value() ) - m_x_pos,
-                                             std::get<1>( closest_herb.value() ) - m_y_pos );
-        m_orientation = direction_to_orientation( dir );
+        Direction dir = vector_to_direction( std::get<0>( closest_herb.value() ) - x_pos_,
+                                             std::get<1>( closest_herb.value() ) - y_pos_ );
+        orientation_ = direction_to_orientation( dir );
         return dir;
     } else {
-        Direction dir = vector_to_direction( std::get<0>( closest_carn.value() ) - m_x_pos,
-                                             std::get<1>( closest_carn.value() ) - m_y_pos );
-        m_orientation = direction_to_orientation( dir );
+        Direction dir = vector_to_direction( std::get<0>( closest_carn.value() ) - x_pos_,
+                                             std::get<1>( closest_carn.value() ) - y_pos_ );
+        orientation_ = direction_to_orientation( dir );
         return dir;
     }
 }
@@ -123,20 +123,20 @@ Direction Carnivore::get_direction( std::optional<std::tuple<unsigned int, unsig
 CollideAction Carnivore::collide_with( Specimen *other ) {
     CollideAction action = other->accept_collide( this );
     if ( action == EAT ) {
-        if ( m_current_hunger < HERBIVORE_VALUE ) {
-            m_current_hunger = 0;
+        if ( current_hunger_ < HERBIVORE_VALUE ) {
+            current_hunger_ = 0;
         } else {
-            m_current_hunger -= HERBIVORE_VALUE;
+            current_hunger_ -= HERBIVORE_VALUE;
         }
     } else if ( action == CROSS ) {
-        m_current_hunger += 8;
+        current_hunger_ += 8;
     }
     return action;
 }
 
 CollideAction Carnivore::accept_collide( Carnivore *other ) {
     UNUSED( other );
-    m_current_hunger += 8;
+    current_hunger_ += 8;
     return CROSS;
 }
 
@@ -148,7 +148,7 @@ CollideAction Carnivore::accept_collide( Herbivore *other ) {
 Specimen *Carnivore::cross( Specimen *other ) {
     UNUSED( other );
     // TODO actually cross
-    return new Carnivore( m_x_pos, m_y_pos, m_speed, m_sight_range, m_sight_angle, m_time_to_sleep );
+    return new Carnivore( x_pos_, y_pos_, speed_, sight_range_, sight_angle_, time_to_sleep_ );
 }
 
 unsigned int Carnivore::change_carnivores_number( unsigned int current_carnivores, unsigned int change ) {
